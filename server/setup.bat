@@ -3,7 +3,7 @@ py -m pip install virtualenv
 py -m venv venv
 
 @REM Activate Virtual Environment
-.\venv\Scripts\activate
+call .\venv\Scripts\activate
 
 @REM Install dependencies for server
 py -m pip install -r requirements.txt
@@ -20,6 +20,6 @@ if "%input%"=="y" (
 )
 
 @REM Deactivate Virtual Environment
-.\venv\Scripts\deactivate
+deactivate
 
 echo Exiting set up...
