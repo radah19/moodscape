@@ -2,6 +2,9 @@
 py -m pip install virtualenv
 py -m venv venv
 
+@REM Activate Virtual Environment
+.\venv\Scripts\activate
+
 @REM Install dependencies for server
 py -m pip install -r requirements.txt
 
@@ -15,5 +18,8 @@ if "%input%"=="y" (
     py manage.py createsuperuser
     cd ../
 )
+
+@REM Deactivate Virtual Environment
+.\venv\Scripts\deactivate
 
 echo Exiting set up...
