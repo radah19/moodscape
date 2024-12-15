@@ -1,3 +1,7 @@
+@REM Set up Virtual Environment
+py -m pip install virtualenv
+py -m venv venv
+
 @REM Install dependencies for server
 py -m pip install -r requirements.txt
 
