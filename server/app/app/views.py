@@ -1,25 +1,20 @@
 import json
 from django.http import JsonResponse
+from django.http import HttpResponse
 from app.models import *
 from django.db import connection
 
+def dictfetchall(cursor):
+    """
+    Return all rows from a cursor as a dict.
+    Assume the column names are unique.
+    """
+    columns = [col[0] for col in cursor.description]
+    return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
-# >>> Person.objects.raw(
-# ...     """
-# ...     SELECT first AS first_name,
-# ...            last AS last_name,
-# ...            bd AS birth_date,
-# ...            pk AS id,
-# ...     FROM some_other_table
-# ...     """
-# ... )
-# class VibeRoom(models.Model):
-#     id = models.IntegerField()
-#     user_id = models.IntegerField()
-#     title = models.TextField()
-#     color_gradient = models.TextField()
-#     fonts = models.TextField()
 def vibe_rooms(request):
+    print('\n------------------- ROOMS REQUESTED ------------------\n\n')
+
     with connection.cursor() as cursor:
         cursor.execute(
             """
@@ -32,23 +27,14 @@ def vibe_rooms(request):
             FROM vibe_rooms as vb
             JOIN room_info as ri on ri.vibe_room_id = vb.id
         """, [])
-    print(connection.cursor().fetchall())
-    return connection.cursor().fetchall()
-    # data = VibeRoom.objects.raw(
-        # """
-        # SELECT
-        #     vb.id as id,
-        #     vb.user_id as user_id,
-        #     ri.title as title,
-        #     ri.color_gradient as color_gradient,
-        #     ri.font as fonts
-        # FROM vibe_rooms as vb
-        # JOIN room_info as ri on ri.vibe_room_id = vb.id
-        # """
-    # )
-    # print('Data: ', data)
-    # response = json.dumps(data)
-    # print('Response: ', response)
+        # print('lalala: ', cursor.fetchall())
+
+        response_data = {}
+        response_data['result'] = dictfetchall(cursor)
+
+    # print(response_data)
+    # print(json.dumps(response_data))
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def vibe_room_user_id(user_id):
     return None
