@@ -16,7 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('vibe_rooms/', views.vibe_rooms, name='vibe_rooms'),
+    path('vibe_rooms_user_id/:user_id/', views.vibe_room_user_id, name='vibe_room_user_id'),
+    path('vibe_rooms_room_id/:room_id/', views.vibe_room_room_id, name='vibe_room'),
+    path('song_links/:room_id/', views.song, name='song'),
+    path('media/:room_id/', views.media)
 ]
