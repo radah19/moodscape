@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRoutes } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import HomePage from './pages/HomePage'
 import './App.css'
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
   let element = useRoutes([
     {
     path: '/', // Home Path!!!!!
-    element: <div><p>I like Momo cafe!!!</p></div>
+    element: <HomePage/>
     },
     {
       path: '/login', // Login Path!!!!!
