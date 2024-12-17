@@ -14,7 +14,6 @@ def dictfetchall(cursor):
 
 
 def vibe_rooms(request):
-    print('\n------------------- ROOMS REQUESTED ------------------\n\n')
 
     with connection.cursor() as cursor:
         cursor.execute(
@@ -28,23 +27,77 @@ def vibe_rooms(request):
             FROM vibe_rooms as vb
             JOIN room_info as ri on ri.vibe_room_id = vb.id
         """, [])
-        # print('lalala: ', cursor.fetchall())
 
         response_data = {}
         response_data['result'] = dictfetchall(cursor)
 
-    # print(response_data)
-    # print(json.dumps(response_data))
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-def vibe_room_user_id(user_id):
-    return None
+def vibe_room_user_id(request, user_id):
+    print('\nREQUEST: ', request, '\n')
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT
+                vb.id as id,
+                vb.user_id as user_id,
+                ri.title as title,
+                ri.color_gradient as color_gradient,
+                ri.font as fonts
+            FROM vibe_rooms as vb
+            JOIN room_info as ri on ri.vibe_room_id = vb.id
+            WHERE vb.user_id = %s
+        """, [user_id])
+    
+        response_data = {}
+        response_data['result'] = dictfetchall(cursor)
 
-def vibe_room_room_id():
-    return None
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-def song():
-    return None
+def vibe_room_room_id(request, room_id):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT
+                vb.id as id,
+                vb.user_id as user_id,
+                ri.title as title,
+                ri.color_gradient as color_gradient,
+                ri.font as fonts
+            FROM vibe_rooms as vb
+            JOIN room_info as ri on ri.vibe_room_id = vb.id
+            WHERE vb.id = %s
+        """, [room_id])
 
-def media():
-    return None
+        response_data = {}
+        response_data['result'] = dictfetchall(cursor)
+
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+def song(request, room_id):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT *
+            FROM song_links
+            WHERE vibe_room_id = %s
+        """, [room_id])
+
+        response_data = {}
+        response_data['result'] = dictfetchall(cursor)
+
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+def media(request, room_id):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT *
+            FROM media 
+            WHERE vibe_room_id = %s
+        """, [room_id])
+
+        response_data = {}
+        response_data['result'] = dictfetchall(cursor)
+
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
