@@ -108,10 +108,11 @@ def auth(request):
     user = authenticate(username=request.GET.get('username', '-1'), password=request.GET.get('password', '-1'))
 
     if user is not None:
-        # Sin in User! Celebrations!
+        # Sign in User! Celebrations!
         response_data = serializers.serialize('json', [ user ])
     else:
-        # Tell user they suck! Boohoo!
+        # Oopsy!
         response_data = 'Oopsy!'
     
+    # print(json.dumps(response_data), '\n')
     return HttpResponse(json.dumps(response_data), content_type='application/json')

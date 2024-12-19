@@ -5,12 +5,12 @@ import './App.css'
 import LoginPage from './pages/LoginPage';
 
 function App() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   
   let element = useRoutes([
     {
-    path: '/', // Home Path!!!!!
-    element: <HomePage/>
+      path: '/', // Home Path!!!!!
+      element: <HomePage user={user}/>
     },
     {
       path: '/login', // Login Path!!!!!

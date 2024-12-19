@@ -1,9 +1,11 @@
-import React from 'react';
 import HomeCard from '../components/HomeCard';
 
-const HomePage = () => {
+const HomePage = (user) => {
     return (
-        <div><HomeCard></HomeCard></div>
+        <div>
+            <h1>Welcome {user.username}!</h1>
+            <HomeCard></HomeCard>
+        </div>
     )
 }
 

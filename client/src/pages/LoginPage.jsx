@@ -1,22 +1,37 @@
 import { useState } from "react";
+import PropTypes from 'prop-types';
 
-const LoginPage = (setUser) => {
+const LoginPage = ({setUser}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const authenticateCredentials = async () => {
-        console.log(process.env);
-        const response = await fetch(`${process.env.BACKEND_URL}/auth?username=${username}&password=${password}`);
-        const json = await response.json();
+        // const options = {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({username: username, password: password})     
+        // }
 
-        if(json == 'Oopsy!'){
-            //Login Failed!
-            console.log('Login failed!');
-        } else {
-            //Login Success
-            console.log('Login success!');
-            setUser(json);
-            window.location = '/';
+        try {
+
+            const response = await fetch(`/api/auth/?username=${username}&password=${password}`);
+            console.log(response);
+            const json = await response.json();
+
+            if(json == 'Oopsy!'){
+                //Login Failed!
+                console.log('Login failed!');
+            } else {
+                //Login Success!
+                console.log('Login success!');
+                setUser(json);
+                window.location = '/';
+            }
+
+        } catch (e) {
+            console.error('Error in authentication: ', e);
         }
     }
 
@@ -31,7 +46,7 @@ const LoginPage = (setUser) => {
                             Username
                         </label>
                         <input className="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                id="username" type="text" placeholder="Username" onChange={(e) => setUsername(e)}
+                                id="username" type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
 
@@ -41,7 +56,7 @@ const LoginPage = (setUser) => {
                             Password
                         </label>
                         <input className="bg-white shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-                                id="password" type="password" placeholder="******************" onChange={(e) => setPassword(e)}
+                                id="password" type="password" placeholder="******************" onChange={(e) => setPassword(e.target.value)}
                         />
                         <p className="text-red-500 text-xs italic">Please choose a password.</p>
                     </div>
@@ -63,5 +78,9 @@ const LoginPage = (setUser) => {
         </div>
     )
 }
+
+LoginPage.propTypes = {
+    setUser: PropTypes.func.isRequired
+};
 
 export default LoginPage;
