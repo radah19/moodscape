@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from app.models import *
 from django.db import connection
+from django.contrib.auth import authenticate
+from django.core import serializers
 
 def dictfetchall(cursor):
     """
@@ -100,4 +102,16 @@ def media(request, room_id):
         response_data = {}
         response_data['result'] = dictfetchall(cursor)
 
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+def auth(request):
+    user = authenticate(username=request.GET.get('username', '-1'), password=request.GET.get('password', '-1'))
+
+    if user is not None:
+        # Sin in User! Celebrations!
+        response_data = serializers.serialize('json', [ user ])
+    else:
+        # Tell user they suck! Boohoo!
+        response_data = 'Oopsy!'
+    
     return HttpResponse(json.dumps(response_data), content_type='application/json')

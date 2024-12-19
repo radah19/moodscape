@@ -1,11 +1,11 @@
-import { useState } from 'react'
 import { useRoutes } from 'react-router-dom'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
 import HomePage from './pages/HomePage'
 import './App.css'
+import LoginPage from './pages/LoginPage';
 
 function App() {
+  const [user, setUser] = useState({});
   
   let element = useRoutes([
     {
@@ -14,7 +14,7 @@ function App() {
     },
     {
       path: '/login', // Login Path!!!!!
-      element: <div><p>I HATE momo cafe 🤮</p></div>
+      element: <div><LoginPage setUser={setUser}/></div>
     }
   ]);
 
