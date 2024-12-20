@@ -1,7 +1,10 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = ({setUser}) => {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,7 +20,6 @@ const LoginPage = ({setUser}) => {
         try {
 
             const response = await fetch(`/api/auth/?username=${username}&password=${password}`);
-            console.log(response);
             const json = await response.json();
 
             if(json == 'Oopsy!'){
@@ -27,7 +29,7 @@ const LoginPage = ({setUser}) => {
                 //Login Success!
                 console.log('Login success!');
                 setUser(json);
-                window.location = '/';
+                navigate("/");
             }
 
         } catch (e) {

@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from app.models import *
 from django.db import connection
 from django.contrib.auth import authenticate
-from django.core import serializers
 
 def dictfetchall(cursor):
     """
@@ -109,10 +108,13 @@ def auth(request):
 
     if user is not None:
         # Sign in User! Celebrations!
-        response_data = serializers.serialize('json', [ user ])
+        return HttpResponse(json.dumps({
+            'username': user.username,
+            'email': user.email
+        }), content_type='application/json')
     else:
         # Oopsy!
-        response_data = 'Oopsy!'
+        return HttpResponse(json.dumps('Oopsy!'), content_type='application/json')
     
     # print(json.dumps(response_data), '\n')
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+    

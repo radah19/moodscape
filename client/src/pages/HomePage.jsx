@@ -1,6 +1,7 @@
 import HomeCard from '../components/HomeCard';
+import PropTypes from 'prop-types';
 
-const HomePage = (user) => {
+const HomePage = ({user}) => {
     return (
         <div>
             <h1>Welcome {user.username}!</h1>
@@ -8,5 +9,9 @@ const HomePage = (user) => {
         </div>
     )
 }
+
+HomePage.propTypes = {
+    user: PropTypes.object
+};
 
 export default HomePage;
