@@ -5,7 +5,9 @@ import './App.css'
 import LoginPage from './pages/LoginPage';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    username: '', email: '', fname: '', lname: ''
+  });
   
   let element = useRoutes([
     {
