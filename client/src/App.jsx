@@ -1,22 +1,28 @@
-import { useRoutes } from 'react-router-dom'
+import { useRoutes, useNavigate } from 'react-router-dom'
 import { useState } from 'react';
 import HomePage from './pages/HomePage'
 import './App.css'
 import LoginPage from './pages/LoginPage';
 
 function App() {
-  const [user, setUser] = useState({
-    username: '', email: '', fname: '', lname: ''
-  });
+  const defaultUser = {
+    username:'', email:'', f_name:'', l_name:''
+  }
+  const [user, setUser] = useState(defaultUser);
+  const navigate = useNavigate();
+
+  function rerouteIfNotLoggedIn(){
+    if(user == defaultUser) navigate('/login');
+  }
   
   let element = useRoutes([
     {
       path: '/', // Home Path!!!!!
-      element: <HomePage user={user}/>
+      element: <HomePage user={user} rerouteIfNotLoggedIn={rerouteIfNotLoggedIn}/>
     },
     {
       path: '/login', // Login Path!!!!!
-      element: <div><LoginPage setUser={setUser}/></div>
+      element: <LoginPage setUser={setUser}/>
     }
   ]);
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = ({user, setUser}) => {
+const LoginPage = ({setUser}) => {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState('');
@@ -28,11 +28,7 @@ const LoginPage = ({user, setUser}) => {
             } else {
                 //Login Success!
                 console.log('Login success!');
-                setUser({
-                    ...user,
-                    username: json.username,
-                    email: json.email
-                });
+                setUser(json);
                 navigate("/");
             }
 

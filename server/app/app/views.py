@@ -20,13 +20,12 @@ def vibe_rooms(request):
         cursor.execute(
             """
             SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
+                id,
+                user,
+                title,
+                color_gradient,
+                font
+            FROM vibe_rooms
         """, [])
 
         response_data = {}
@@ -40,14 +39,13 @@ def vibe_room_user_id(request, user_id):
         cursor.execute(
             """
             SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
-            WHERE vb.user_id = %s
+                id,
+                user,
+                title,
+                color_gradient,
+                font
+            FROM vibe_rooms
+            WHERE user = %s
         """, [user_id])
     
         response_data = {}
@@ -60,14 +58,13 @@ def vibe_room_room_id(request, room_id):
         cursor.execute(
             """
             SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
-            WHERE vb.id = %s
+                id,
+                user,
+                title,
+                color_gradient,
+                font
+            FROM vibe_rooms
+            WHERE id = %s
         """, [room_id])
 
         response_data = {}
@@ -108,9 +105,21 @@ def auth(request):
 
     if user is not None:
         # Sign in User! Celebrations!
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT *
+                FROM users 
+                WHERE username = %s
+            """, [user.username])
+
+            user_info = dictfetchall(cursor)
+
         return HttpResponse(json.dumps({
             'username': user.username,
-            'email': user.email
+            'email': user.email,
+            'f_name': user_info[0]['f_name'],
+            'l_name': user_info[0]['l_name']
         }), content_type='application/json')
     else:
         # Oopsy!
