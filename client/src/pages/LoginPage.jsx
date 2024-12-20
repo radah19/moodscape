@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"
 
 const LoginPage = ({setUser}) => {
     const navigate = useNavigate();
@@ -9,17 +10,20 @@ const LoginPage = ({setUser}) => {
     const [password, setPassword] = useState('');
 
     const authenticateCredentials = async () => {
-        // const options = {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({username: username, password: password})     
-        // }
+        const csrfToken = Cookies.get('csrftoken');
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({username: username, password: password})     
+        }
 
         try {
 
-            const response = await fetch(`/api/auth/?username=${username}&password=${password}`);
+            const response = await fetch(`/api/auth/`, options);
             const json = await response.json();
 
             if(json == 'Oopsy!'){
