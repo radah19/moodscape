@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from app.models import *
 from django.db import connection
+from django.contrib.auth import authenticate
 
 def dictfetchall(cursor):
     """
@@ -19,13 +20,12 @@ def vibe_rooms(request):
         cursor.execute(
             """
             SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
+                id,
+                user,
+                title,
+                color_gradient,
+                font
+            FROM vibe_rooms
         """, [])
 
         response_data = {}
@@ -39,14 +39,13 @@ def vibe_room_user_id(request, user_id):
         cursor.execute(
             """
             SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
-            WHERE vb.user_id = %s
+                id,
+                user,
+                title,
+                color_gradient,
+                font
+            FROM vibe_rooms
+            WHERE user = %s
         """, [user_id])
     
         response_data = {}
@@ -59,14 +58,13 @@ def vibe_room_room_id(request, room_id):
         cursor.execute(
             """
             SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
-            WHERE vb.id = %s
+                id,
+                user,
+                title,
+                color_gradient,
+                font
+            FROM vibe_rooms
+            WHERE id = %s
         """, [room_id])
 
         response_data = {}
@@ -101,3 +99,31 @@ def media(request, room_id):
         response_data['result'] = dictfetchall(cursor)
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+def auth(request):
+    user = authenticate(username=request.GET.get('username', '-1'), password=request.GET.get('password', '-1'))
+
+    if user is not None:
+        # Sign in User! Celebrations!
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT *
+                FROM users 
+                WHERE username = %s
+            """, [user.username])
+
+            user_info = dictfetchall(cursor)
+
+        return HttpResponse(json.dumps({
+            'username': user.username,
+            'email': user.email,
+            'f_name': user_info[0]['f_name'],
+            'l_name': user_info[0]['l_name']
+        }), content_type='application/json')
+    else:
+        # Oopsy!
+        return HttpResponse(json.dumps('Oopsy!'), content_type='application/json')
+    
+    # print(json.dumps(response_data), '\n')
+    
