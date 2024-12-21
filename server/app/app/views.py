@@ -40,7 +40,7 @@ def vibe_room_user_id(request, user_id):
             """
             SELECT
                 id,
-                user,
+                created_by as user,
                 title,
                 color_gradient,
                 font
@@ -59,7 +59,7 @@ def vibe_room_room_id(request, room_id):
             """
             SELECT
                 id,
-                user,
+                created_by as user,
                 title,
                 color_gradient,
                 font
