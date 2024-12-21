@@ -40,7 +40,7 @@ def vibe_room_user_id(request, user_id):
             """
             SELECT
                 id,
-                user,
+                created_by as user,
                 title,
                 color_gradient,
                 font
@@ -59,7 +59,7 @@ def vibe_room_room_id(request, room_id):
             """
             SELECT
                 id,
-                user,
+                created_by as user,
                 title,
                 color_gradient,
                 font
@@ -101,8 +101,8 @@ def media(request, room_id):
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def auth(request):
-    user = authenticate(username=request.GET.get('username', '-1'), password=request.GET.get('password', '-1'))
-
+    request_data = json.loads(request.body)
+    user = authenticate(username=request_data.get('username', ''), password=request_data.get('password', ''))
     if user is not None:
         # Sign in User! Celebrations!
         with connection.cursor() as cursor:
@@ -125,5 +125,5 @@ def auth(request):
         # Oopsy!
         return HttpResponse(json.dumps('Oopsy!'), content_type='application/json')
     
-    # print(json.dumps(response_data), '\n')
+    
     
