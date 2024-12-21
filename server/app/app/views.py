@@ -45,7 +45,7 @@ def vibe_room_user_id(request, user_id):
                 color_gradient,
                 font
             FROM vibe_rooms
-            WHERE user = %s
+            WHERE created_by = %s
         """, [user_id])
     
         response_data = {}
