@@ -3,12 +3,14 @@ import { useState } from 'react';
 import HomePage from './pages/HomePage'
 import './App.css'
 import LoginPage from './pages/LoginPage';
+import Cookies from 'js-cookie';
 
 function App() {
+  const cachedUser = Cookies.get('user');
   const defaultUser = {
     username:'', email:'', f_name:'', l_name:''
   }
-  const [user, setUser] = useState(defaultUser);
+  const [user, setUser] = useState((cachedUser == undefined) ? defaultUser : JSON.parse(cachedUser));
   const navigate = useNavigate();
 
   function rerouteIfNotLoggedIn(){

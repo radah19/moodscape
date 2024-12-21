@@ -33,6 +33,7 @@ const LoginPage = ({setUser}) => {
                 //Login Success!
                 console.log('Login success!');
                 setUser(json);
+                Cookies.set('user', JSON.stringify(json), { expires: 1 });
                 navigate("/");
             }
 
