@@ -1,0 +1,12 @@
+html, body {
+    width: 100%;
+}
+
+.vibeBarContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    row-gap: 5vh;
+}

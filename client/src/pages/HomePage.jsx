@@ -1,9 +1,14 @@
 import React from 'react';
 import HomeCard from '../components/HomeCard';
+import './HomePage.css';
 
 const HomePage = () => {
     return (
-        <div><HomeCard></HomeCard></div>
+        <div class="vibeBarContainer">
+            <HomeCard></HomeCard>
+            <HomeCard></HomeCard>
+            <HomeCard></HomeCard>
+        </div>
     )
 }
 
