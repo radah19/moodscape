@@ -30,7 +30,7 @@ const HomePage = ({user, rerouteIfNotLoggedIn}) => {
         <div className="vibeBarContainer">
             <h1>Welcome {user.f_name}!</h1>
             {userVibeRooms.map((room) => (
-                <HomeCard key={room.id} title={room.title} font={room.font} gradient={room.color_gradient}></HomeCard>
+                <HomeCard key={room.id} title={room.title} font={room.font} color_gradient={room.color_gradient}></HomeCard>
             ))}
         </div>
     )
