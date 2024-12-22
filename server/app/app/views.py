@@ -33,7 +33,7 @@ def vibe_rooms(request):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-def vibe_room_user_id(request, user_id):
+def vibe_room_user_id(request, user):
     print('\nREQUEST: ', request, '\n')
     with connection.cursor() as cursor:
         cursor.execute(
@@ -46,7 +46,7 @@ def vibe_room_user_id(request, user_id):
                 font
             FROM vibe_rooms
             WHERE created_by = %s
-        """, [user_id])
+        """, [user])
     
         response_data = {}
         response_data['result'] = dictfetchall(cursor)

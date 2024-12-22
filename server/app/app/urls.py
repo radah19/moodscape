@@ -20,10 +20,10 @@ from app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('vibe_rooms/', views.vibe_rooms, name='vibe_rooms'),
-    path('vibe_rooms_user_id/<str:user_id>/', views.vibe_room_user_id, name='vibe_room_user_id'),
-    path('vibe_rooms_room_id/<int:room_id>/', views.vibe_room_room_id, name='vibe_room'),
-    path('song_links/<int:room_id>/', views.song, name='song'),
+    path('vibe_rooms/', views.vibe_rooms),
+    path('vibe_rooms_user_id/<str:user>/', views.vibe_room_user_id),
+    path('vibe_rooms_room_id/<int:room_id>/', views.vibe_room_room_id),
+    path('song_links/<int:room_id>/', views.song),
     path('media/<int:room_id>/', views.media),
     path("auth/", views.auth)
 ]
