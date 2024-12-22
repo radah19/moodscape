@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS users_info;
-DROP TABLE IF EXISTS room_info;
+-- DROP TABLE IF EXISTS users_info;
+-- DROP TABLE IF EXISTS room_info;
 DROP TABLE IF EXISTS media;
 DROP TABLE IF EXISTS song_links;
 DROP TABLE IF EXISTS vibe_rooms;
@@ -39,7 +39,8 @@ INSERT INTO users (username, f_name, l_name) VALUES
     ('melodymaven', 'Michael', 'Chen'),
     ('tuneTrekker', 'Sophia', 'Williams'),
     ('Xinxinxin', 'Xinxi', 'Nxinyue'),
-    ('Xinxin', 'Xinnian', 'Xinth');
+    ('Xinxin', 'Xinnian', 'Xinth'),
+	('Xin', 'Frank', 'Xinxin');
 
 -- Insert data into vibe_rooms table (2-3 rooms per user)
 INSERT INTO vibe_rooms (created_by, title, color_gradient, font) VALUES 
@@ -65,9 +66,9 @@ INSERT INTO vibe_rooms (created_by, title, color_gradient, font) VALUES
     ('Xinxinxin', 'C-Pop Central', 'linear-gradient(315deg, #d4418e 0%, #0652c5 74%)', 'Century Gothic, sans-serif'),
     ('Xinxinxin', 'Mandopop Mix', 'linear-gradient(315deg, #fc9842 0%, #fe5f75 74%)', 'Microsoft YaHei, sans-serif'),
     
-    -- Xinxin's rooms
-    ('Xinxin', 'Asian Underground', 'linear-gradient(315deg, #f7b42c 0%, #fc575e 74%)', 'Noto Sans SC, sans-serif'),
-    ('Xinxin', 'Traditional Fusion', 'linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%)', 'SimSun, serif');
+    -- Xin's rooms
+    ('Xin', 'Asian Underground', 'linear-gradient(315deg, #f7b42c 0%, #fc575e 74%)', 'Noto Sans SC, sans-serif'),
+    ('Xin', 'Traditional Fusion', 'linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%)', 'SimSun, serif');
 
 -- Insert data into song_links table (2-3 songs per room)
 INSERT INTO song_links (vibe_room_id, song_link) VALUES 
@@ -105,7 +106,7 @@ INSERT INTO song_links (vibe_room_id, song_link) VALUES
     (12, 'https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS'),
     (12, 'https://open.spotify.com/track/3w3y8KPTfNeOKPiqUTakBh'),
     
-    -- Xinxin's room songs
+    -- Xin's room songs
     (13, 'https://open.spotify.com/track/2gZUPNdnz5Y45eiGxpHGSc'),
     (13, 'https://open.spotify.com/track/3HNnxK7NgLXbDoxRZxNWiR'),
     (14, 'https://open.spotify.com/track/0ofHAoxe9vBkTCp2UQIavz'),
@@ -147,7 +148,7 @@ INSERT INTO media (vibe_room_id, img_link, txt) VALUES
     (12, 'https://images.unsplash.com/photo-1499415479124-43c32433a620', 'Mandarin hits'),
     (12, 'https://images.unsplash.com/photo-1499424017184-c82f39a192f1', 'Pop culture'),
     
-    -- Xinxin's room media
+    -- Xin's room media
     (13, 'https://images.unsplash.com/photo-1516280440614-37939bbacd81', 'Underground beats'),
     (13, 'https://images.unsplash.com/photo-1523554888454-84137e72c3ce', 'Asian fusion'),
     (14, 'https://images.unsplash.com/photo-1499415479124-43c32433a620', 'Traditional meets modern'),

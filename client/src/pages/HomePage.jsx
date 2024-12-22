@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import HomeCard from '../components/HomeCard';
+import './HomePage.css';
 import PropTypes from 'prop-types';
 
 const HomePage = ({user, rerouteIfNotLoggedIn}) => {
@@ -8,8 +9,10 @@ const HomePage = ({user, rerouteIfNotLoggedIn}) => {
     }, [user]);
 
     return (
-        <div>
+        <div class="vibeBarContainer">
             <h1>Welcome {user.f_name}!</h1>
+            <HomeCard></HomeCard>
+            <HomeCard></HomeCard>
             <HomeCard></HomeCard>
         </div>
     )

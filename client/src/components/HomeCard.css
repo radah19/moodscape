@@ -1,0 +1,16 @@
+#tab {
+    display: flex;
+    justify-content: space-between !important;
+    align-items: stretch;
+    height: 8vh;
+    width: 100%;
+    /* border-radius: 0.5rem; */
+    /* background-color: white; */
+    color: black;
+}
+
+.tabColor {
+    width: 30%;
+    border-radius: 0.5rem;
+    background: linear-gradient(#e66465, #9198e5);
+}
