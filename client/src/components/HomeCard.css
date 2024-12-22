@@ -4,13 +4,18 @@
     align-items: stretch;
     height: 8vh;
     width: 100%;
-    /* border-radius: 0.5rem; */
-    /* background-color: white; */
     color: black;
 }
 
-.tabColor {
-    width: 30%;
-    border-radius: 0.5rem;
-    background: linear-gradient(#e66465, #9198e5);
+#tabColor {
+    width: 40%;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+#text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 0.75rem;
 }
