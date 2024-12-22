@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from app.models import *
 from django.db import connection
 from django.contrib.auth import authenticate
+# from django.views.decorators.csrf import csrf_exempt
 
 def dictfetchall(cursor):
     """
@@ -33,7 +34,7 @@ def vibe_rooms(request):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-def vibe_room_user_id(request, user_id):
+def vibe_room_user_id(request, username):
     print('\nREQUEST: ', request, '\n')
     with connection.cursor() as cursor:
         cursor.execute(
@@ -46,7 +47,7 @@ def vibe_room_user_id(request, user_id):
                 font
             FROM vibe_rooms
             WHERE created_by = %s
-        """, [user_id])
+        """, [username])
     
         response_data = {}
         response_data['result'] = dictfetchall(cursor)
@@ -100,6 +101,7 @@ def media(request, room_id):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+# @csrf_exempt 
 def auth(request):
     request_data = json.loads(request.body)
     user = authenticate(username=request_data.get('username', ''), password=request_data.get('password', ''))
