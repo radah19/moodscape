@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie"
 
-const LoginPage = ({setUser}) => {
+const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState('');
@@ -12,6 +12,10 @@ const LoginPage = ({setUser}) => {
 
     const [loading, setLoading] = useState(false);
     const [showErrorMsg, setShowErrorMsg] = useState(false);
+
+    // useEffect(() => {
+    //     rerouteIfLoggedIn();
+    // }, [user]);
 
     const authenticateCredentials = async () => {
         setLoading(true);
@@ -41,6 +45,7 @@ const LoginPage = ({setUser}) => {
                 console.log('Login success!');
                 setUser(json);
                 Cookies.set('user', JSON.stringify({...json, password: password}), { expires: 1 });
+                Cookies.set('csrftoken', json.csrftoken, { expires: 1 })
                 navigate("/");
             }
             
@@ -104,7 +109,8 @@ const LoginPage = ({setUser}) => {
 
 LoginPage.propTypes = {
     user: PropTypes.object,
-    setUser: PropTypes.func.isRequired
+    setUser: PropTypes.func.isRequired,
+    rerouteIfLoggedIn: PropTypes.func
 };
 
 export default LoginPage;
