@@ -14,7 +14,11 @@ function App() {
   const navigate = useNavigate();
 
   function rerouteIfNotLoggedIn(){
-    if(user == defaultUser) navigate('/login');
+    if(user.username == defaultUser.username) navigate('/login');
+  }
+
+  function rerouteIfLoggedIn(){
+    if(user.username != defaultUser.username) navigate('/');
   }
   
   let element = useRoutes([
@@ -24,7 +28,7 @@ function App() {
     },
     {
       path: '/login', // Login Path!!!!!
-      element: <LoginPage setUser={setUser}/>
+      element: <LoginPage user={user} setUser={setUser} rerouteIfLoggedIn={rerouteIfLoggedIn}/>
     }
   ]);
 

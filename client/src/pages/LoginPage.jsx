@@ -13,9 +13,9 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
     const [loading, setLoading] = useState(false);
     const [showErrorMsg, setShowErrorMsg] = useState(false);
 
-    // useEffect(() => {
-    //     rerouteIfLoggedIn();
-    // }, [user]);
+    useEffect(() => {
+        rerouteIfLoggedIn();
+    }, [user]);
 
     const authenticateCredentials = async () => {
         setLoading(true);
