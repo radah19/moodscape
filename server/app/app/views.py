@@ -4,7 +4,8 @@ from django.http import HttpResponse
 from app.models import *
 from django.db import connection
 from django.contrib.auth import authenticate
-# from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
 
 def dictfetchall(cursor):
     """
@@ -101,11 +102,13 @@ def media(request, room_id):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-# @csrf_exempt 
+@csrf_exempt 
 def auth(request):
     request_data = json.loads(request.body)
     user = authenticate(username=request_data.get('username', ''), password=request_data.get('password', ''))
     if user is not None:
+        csrf_token = get_token(request)
+
         # Sign in User! Celebrations!
         with connection.cursor() as cursor:
             cursor.execute(
@@ -121,7 +124,8 @@ def auth(request):
             'username': user.username,
             'email': user.email,
             'f_name': user_info[0]['f_name'],
-            'l_name': user_info[0]['l_name']
+            'l_name': user_info[0]['l_name'],
+            'csrftoken': csrf_token
         }), content_type='application/json')
     else:
         # Oopsy!
