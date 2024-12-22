@@ -14,7 +14,7 @@ const HomeCard = (props) => {
             <div style={{fontFamily:`${props.font}`}} id="text">
                 {props.title}
             </div>
-            <div style={{borderWidth: "1px", background:`${props.color_gradient}`}} id="tabColor"></div>
+            <div style={{background:`${props.color_gradient}`}} id="tabColor"></div>
         </div>
     )
 }
