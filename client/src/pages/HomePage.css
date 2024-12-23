@@ -11,3 +11,12 @@ html, body {
     width: 50vw;
     row-gap: 5vh;
 }
+
+#addCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
