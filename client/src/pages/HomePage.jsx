@@ -2,14 +2,12 @@ import { useEffect, useState } from 'react';
 import HomeCard from '../components/HomeCard';
 import './HomePage.css';
 import PropTypes from 'prop-types';
-import Cookies from "js-cookie"
 
-const HomePage = ({user, rerouteIfNotLoggedIn}) => {
+const HomePage = ({user}) => {
 
     const [userVibeRooms, setUserVibeRooms] = useState([]);
 
     useEffect(() => {
-        rerouteIfNotLoggedIn();
         fetchVibeRooms();
     }, [user]);
 
