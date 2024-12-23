@@ -68,7 +68,7 @@ INSERT INTO vibe_rooms (created_by, title, color_gradient, font) VALUES
     ('Xinxinxin', 'Shanghai Beats', 'linear-gradient(315deg, #ff8008 0%, #ffc837 74%)', 'Malgun Gothic, sans-serif'),
     ('Xinxinxin', 'Tokyo Vibes', 'linear-gradient(315deg, #8a2be2 0%, #0000ff 74%)', 'Meiryo, sans-serif'),
     ('Xinxinxin', 'Seoul Sessions', 'linear-gradient(315deg, #20bf55 0%, #01baef 74%)', 'Segoe UI, sans-serif'),
-    ('Xinxinxin', 'Музыкальный Микс', 'linear-gradient(315deg, #2d00f7 0%, #ff0291 74%)', 'Arial, sans-serif')
+    ('Xinxinxin', 'Музыкальный Микс', 'linear-gradient(315deg, #2d00f7 0%, #ff0291 74%)', 'Arial, sans-serif'),
     ('Xinxinxin', 'Taipei Tunes', 'linear-gradient(315deg, #ff6b6b 0%, #4ecdc4 74%)', 'Arial Unicode MS, sans-serif'),
     ('Xinxinxin', 'Harajuku Hits', 'linear-gradient(315deg, #7f00ff 0%, #e100ff 74%)', 'Helvetica Neue, sans-serif'),
     ('Xinxinxin', 'Beijing Beats', 'linear-gradient(315deg, #f093fb 0%, #f5576c 74%)', 'Yu Gothic, sans-serif'),
@@ -82,7 +82,7 @@ INSERT INTO vibe_rooms (created_by, title, color_gradient, font) VALUES
     
     -- Xin's rooms
     ('Xin', 'Asian Underground', 'linear-gradient(315deg, #f7b42c 0%, #fc575e 74%)', 'Noto Sans SC, sans-serif'),
-    ('Xin', 'Traditional Fusion', 'linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%)', 'SimSun, serif');
+    ('Xin', 'Traditional Fusion', 'linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%)', 'SimSun, serif'),
     ('Xin', 'Zen Garden', 'linear-gradient(315deg, #2af598 0%, #009efd 74%)', 'Noto Serif TC, serif'),
     ('Xin', 'Modern Orient', 'linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%)', 'Noto Sans TC, sans-serif'),
     ('Xin', 'Bamboo Forest', 'linear-gradient(315deg, #3bb78f 0%, #0bab64 74%)', 'Ma Shan Zheng, cursive'),
