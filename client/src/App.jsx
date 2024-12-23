@@ -3,34 +3,38 @@ import { useState } from 'react';
 import HomePage from './pages/HomePage'
 import './App.css'
 import LoginPage from './pages/LoginPage';
-import Cookies from 'js-cookie';
+import VerifyCachedUserPage from './pages/VerifyCachedUserPage';
 
 function App() {
-  const cachedUser = Cookies.get('user');
   const defaultUser = {
     username:'', email:'', f_name:'', l_name:''
   }
-  const [user, setUser] = useState((cachedUser == undefined) ? defaultUser : JSON.parse(cachedUser));
+
+  const [user, setUser] = useState(defaultUser);
+  const [verifyingCachedUser, setVerifyingCachedUser] = useState(true);
   const navigate = useNavigate();
 
-  function rerouteIfNotLoggedIn(){
-    if(user == defaultUser) navigate('/login');
+  function rerouteIfLoggedIn(){
+    if(user.username != defaultUser.username) navigate('/');
   }
   
   let element = useRoutes([
     {
       path: '/', // Home Path!!!!!
-      element: <HomePage user={user} rerouteIfNotLoggedIn={rerouteIfNotLoggedIn}/>
+      element: <HomePage user={user} />
     },
     {
       path: '/login', // Login Path!!!!!
-      element: <LoginPage setUser={setUser}/>
+      element: <LoginPage user={user} setUser={setUser} rerouteIfLoggedIn={rerouteIfLoggedIn}/>
     }
   ]);
 
   return (
     <div>
-      {element}
+      { verifyingCachedUser ? 
+        <VerifyCachedUserPage setVerifyingCachedUser={setVerifyingCachedUser} setUser={setUser}/> 
+        : element
+      }
     </div>
   )
 }

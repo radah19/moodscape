@@ -65,10 +65,37 @@ INSERT INTO vibe_rooms (created_by, title, color_gradient, font) VALUES
     -- Xinxinxin's rooms
     ('Xinxinxin', 'C-Pop Central', 'linear-gradient(315deg, #d4418e 0%, #0652c5 74%)', 'Century Gothic, sans-serif'),
     ('Xinxinxin', 'Mandopop Mix', 'linear-gradient(315deg, #fc9842 0%, #fe5f75 74%)', 'Microsoft YaHei, sans-serif'),
+    ('Xinxinxin', 'Shanghai Beats', 'linear-gradient(315deg, #ff8008 0%, #ffc837 74%)', 'Malgun Gothic, sans-serif'),
+    ('Xinxinxin', 'Tokyo Vibes', 'linear-gradient(315deg, #8a2be2 0%, #0000ff 74%)', 'Meiryo, sans-serif'),
+    ('Xinxinxin', 'Seoul Sessions', 'linear-gradient(315deg, #20bf55 0%, #01baef 74%)', 'Segoe UI, sans-serif'),
+    ('Xinxinxin', 'Музыкальный Микс', 'linear-gradient(315deg, #2d00f7 0%, #ff0291 74%)', 'Arial, sans-serif'),
+    ('Xinxinxin', 'Taipei Tunes', 'linear-gradient(315deg, #ff6b6b 0%, #4ecdc4 74%)', 'Arial Unicode MS, sans-serif'),
+    ('Xinxinxin', 'Harajuku Hits', 'linear-gradient(315deg, #7f00ff 0%, #e100ff 74%)', 'Helvetica Neue, sans-serif'),
+    ('Xinxinxin', 'Beijing Beats', 'linear-gradient(315deg, #f093fb 0%, #f5576c 74%)', 'Yu Gothic, sans-serif'),
+    ('Xinxinxin', 'Gangnam Groove', 'linear-gradient(315deg, #45b649 0%, #dce35b 74%)', 'Source Sans Pro, sans-serif'),
+    ('Xinxinxin', 'Shibuya Sound', 'linear-gradient(315deg, #00c6fb 0%, #005bea 74%)', 'Roboto, sans-serif'),
+    ('Xinxinxin', 'Hong Kong Hits', 'linear-gradient(315deg, #f83600 0%, #f9d423 74%)', 'Noto Sans, sans-serif'),
+    ('Xinxinxin', 'Kowloon Karaoke', 'linear-gradient(315deg, #b721ff 0%, #21d4fd 74%)', 'Open Sans, sans-serif'),
+    ('Xinxinxin', 'Macau Melodies', 'linear-gradient(315deg, #6b0f1a 0%, #b91372 74%)', 'Verdana, sans-serif'),
+    ('Xinxinxin', 'Osaka Outrun', 'linear-gradient(315deg, #3b41c5 0%, #a981bb 74%)', 'Tahoma, sans-serif'),
+    ('Xinxinxin', 'Sapporo Sound', 'linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%)', 'Arial, sans-serif'),
     
     -- Xin's rooms
     ('Xin', 'Asian Underground', 'linear-gradient(315deg, #f7b42c 0%, #fc575e 74%)', 'Noto Sans SC, sans-serif'),
-    ('Xin', 'Traditional Fusion', 'linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%)', 'SimSun, serif');
+    ('Xin', 'Traditional Fusion', 'linear-gradient(315deg, #89d4cf 0%, #6e45e1 74%)', 'SimSun, serif'),
+    ('Xin', 'Zen Garden', 'linear-gradient(315deg, #2af598 0%, #009efd 74%)', 'Noto Serif TC, serif'),
+    ('Xin', 'Modern Orient', 'linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%)', 'Noto Sans TC, sans-serif'),
+    ('Xin', 'Bamboo Forest', 'linear-gradient(315deg, #3bb78f 0%, #0bab64 74%)', 'Ma Shan Zheng, cursive'),
+    ('Xin', 'Lotus Pond', 'linear-gradient(315deg, #ff7e5f 0%, #feb47b 74%)', 'Zhi Mang Xing, cursive'),
+    ('Xin', 'Silk Road', 'linear-gradient(315deg, #6b0f1a 0%, #b91372 74%)', 'Long Cang, serif'),
+    ('Xin', 'Tea House', 'linear-gradient(315deg, #7f53ac 0%, #647dee 74%)', 'Noto Serif SC, serif'),
+    ('Xin', 'Paper Lanterns', 'linear-gradient(315deg, #ff4e50 0%, #f9d423 74%)', 'ZCOOL XiaoWei, sans-serif'),
+    ('Xin', 'Cherry Blossom', 'linear-gradient(315deg, #ff758c 0%, #ff7eb3 74%)', 'ZCOOL QingKe HuangYou, cursive'),
+    ('Xin', 'Jade Palace', 'linear-gradient(315deg, #276174 0%, #33a6b8 74%)', 'Liu Jian Mao Cao, cursive'),
+    ('Xin', 'Dragon Gate', 'linear-gradient(315deg, #d4418e 0%, #0652c5 74%)', 'Noto Sans JP, sans-serif'),
+    ('Xin', 'Mountain Mist', 'linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%)', 'Noto Serif JP, serif'),
+    ('Xin', 'Imperial Court', 'linear-gradient(315deg, #9921e8 0%, #5f72be 74%)', 'Sun Yat Sen, serif'),
+    ('Xin', 'Night Market', 'linear-gradient(315deg, #f6d365 0%, #fda085 74%)', 'Noto Sans KR, sans-serif');
 
 -- Insert data into song_links table (2-3 songs per room)
 INSERT INTO song_links (vibe_room_id, song_link) VALUES 

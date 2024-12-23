@@ -3,16 +3,14 @@ import HomeCard from '../components/HomeCard';
 import CreateCardModal from '../components/CreateCardModal';
 import './HomePage.css';
 import PropTypes from 'prop-types';
-import Cookies from "js-cookie"
 
-const HomePage = ({user, rerouteIfNotLoggedIn}) => {
+const HomePage = ({user}) => {
 
     const [userVibeRooms, setUserVibeRooms] = useState([]);
     // const [modalVisibility, setModalVisibility] = useState("hidden")
     const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
-        rerouteIfNotLoggedIn();
         fetchVibeRooms();
     }, [user]);
 
