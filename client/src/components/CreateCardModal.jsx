@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import PropTypes from 'prop-types';
 
 import { HexColorPicker } from "react-colorful";
 
@@ -148,3 +149,8 @@ export default function CreateCardModal(props) {
         </Dialog>
     )
 }
+
+CreateCardModal.propTypes = {
+    open: PropTypes.bool,
+    setModalCallback: PropTypes.func
+};
