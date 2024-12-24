@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 const HomePage = ({user}) => {
 
     const [userVibeRooms, setUserVibeRooms] = useState([]);
-    // const [modalVisibility, setModalVisibility] = useState("hidden")
     const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
@@ -25,14 +24,6 @@ const HomePage = ({user}) => {
             console.error(e);
         }
     }
-
-    // const modalVisibilityHandler = () => {
-    //     if (modalVisibility == "hidden") {
-    //         setModalVisibility("visible");
-    //     } else {
-    //         setModalVisibility("hidden");
-    //     }
-    // }
 
     const setModalCallback = (state) => {
         setModalOpen(state);
