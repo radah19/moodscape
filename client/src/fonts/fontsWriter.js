@@ -12,7 +12,7 @@ function mapFontsToStr(){
 }
 
 export function writeFontsToCSS(){
-    fs.writeFile('./fonts.css', content, err => {
+    fs.writeFile('./fonts.css', "", err => {
         if (err) {
             console.error(err);
         } else {
