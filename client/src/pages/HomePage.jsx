@@ -35,7 +35,7 @@ const HomePage = ({user}) => {
 
     return (
         <div className="vibeBarContainer">
-            <h1>Welcome {user.f_name}!</h1>
+            <h1 style={{fontFamily:'Orbitron'}}>Welcome {user.f_name}!</h1>
             {userVibeRooms.map((room) => (
                 <HomeCard key={room.id} title={room.title} font={room.font} color_gradient={room.color_gradient}></HomeCard>
             ))}
