@@ -1,0 +1,3 @@
+A bit weird but I might've not been able to figure out a great way to generate fonts from the fonts.js json upon launching the app 😭
+
+In the client directory, running "npm run generate-fonts" should generate fonts if any any new fonts were added to fonts.js !
