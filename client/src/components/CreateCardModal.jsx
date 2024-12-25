@@ -3,51 +3,69 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import PropTypes from 'prop-types';
 
 import { HexColorPicker } from "react-colorful";
+import selectable_fonts from "../fonts/fonts.js";
 
+// For font dropdown
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 
 export default function CreateCardModal(props) {
 
     const [color1, setColor1] = useState("#aabbcc");
     const [color2, setColor2] = useState("#aabbcc");
+    const [selectedFont, setSelectedFont] = useState("Arial");
 
     const colorPicker1Ref = useRef(null);
     const colorPicker2Ref = useRef(null);
-    const colorPickerOpen = useRef(false);
+    const colorPicker1Open = useRef(false);
+    const colorPicker2Open = useRef(false);
+    // const selectedFont = useRef("Arial");
 
     const buttonHandler = () => {
         props.setModalCallback(false)
     }
 
-    const showColorPicker1 = (event) => {
-        event.stopPropagation();
-        const element = colorPicker1Ref.current;
-        if (element) {
-            colorPickerOpen.current = !(colorPickerOpen.current);
-            element.showPopover();
+    const toggleColorPicker1 = (event) => {
+        console.log(colorPicker1Open.current);
+        if (!colorPicker1Open.current) {
+            event.stopPropagation();
+            const element = colorPicker1Ref.current;
+            if (element) {
+                colorPicker1Open.current = true;
+                element.showPopover();
+            }
         }
     }
 
-    const showColorPicker2 = (event) => {
-        event.stopPropagation();
-        const element = colorPicker2Ref.current;
-        if (element) {
-            colorPickerOpen.current = !(colorPickerOpen.current);
-            element.showPopover();
+    const toggleColorPicker2 = (event) => {
+        console.log(colorPicker2Open.current);
+        if (!colorPicker2Open.current) {
+            event.stopPropagation();
+            const element = colorPicker2Ref.current;
+            if (element) {
+                colorPicker2Open.current = true;
+                element.showPopover();
+            }
         }
     }
 
     const closeColorPickers = () => {
-        if (colorPickerOpen.current) {
+        console.log(colorPicker1Ref.current);
+        console.log(colorPicker2Ref.current);
+        if (colorPicker1Open.current) {
             const element1 = colorPicker1Ref.current;
             if (element1) {
                 element1.hidePopover();
             }
+            colorPicker1Open.current = false;
+        }
+        if (colorPicker2Open.current) {
             const element2 = colorPicker2Ref.current;
             if (element2) {
                 element2.hidePopover();
             }
-            colorPickerOpen.current = !(colorPickerOpen.current);
+            colorPicker2Open.current = false;
         }
     }
 
@@ -58,6 +76,10 @@ export default function CreateCardModal(props) {
     const handlePopup2Click = (event) => {
         event.stopPropagation();
     }
+
+    // const changeSelectedFont = (font) => {
+    //     selectedFont.current = font;
+    // }
 
     return (
         <Dialog open={props.open} onClose={buttonHandler} className="relative z-10">
@@ -93,7 +115,36 @@ export default function CreateCardModal(props) {
                             </DialogTitle>
                             </label>
 
-                            <select className="sm:my-2 w-full" id="font"></select>
+                            <Menu as="div" className="relative inline-block text-left mt-2 mb-1">
+
+                                <div>
+                                    <MenuButton style={{fontFamily: `${selectedFont}`}} className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                    {selectedFont}
+                                    <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5 text-gray-400" />
+                                    </MenuButton>
+                                </div>
+
+                                <MenuItems
+                                    transition
+                                    className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                                >
+                                    <div className="py-1">
+                                    {selectable_fonts.map((f, index) => (
+
+                                        <MenuItem key={index} value={f.font} style={{fontFamily: `${f.font}`}}>
+                                        <a
+                                        href="#"
+                                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                                        onClick={() => {setSelectedFont(f.font)}}
+                                        >
+                                            {f.font}
+                                        </a>
+                                        </MenuItem>))
+                                    }
+                                    </div>
+                                </MenuItems>
+                            </Menu>
+
 
                             <DialogTitle as="h3" className="text-base font-semibold text-gray-900 my-2">
                                 Background Color Gradient
@@ -103,21 +154,21 @@ export default function CreateCardModal(props) {
                                 type="button"
                                 className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 sm:mr-3 sm:w-auto"
                                 style={{backgroundColor:`${color1}`}}
-                                onClick={showColorPicker1}>
+                                onClick={toggleColorPicker1}>
                                     Color 1
                             </button>
                             <button
                                 type="button"
                                 className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 sm:my-2 sm:w-auto"
                                 style={{backgroundColor:`${color2}`}}
-                                onClick={showColorPicker2}>
+                                onClick={toggleColorPicker2}>
                                     Color 2
                             </button>
 
                             <div className="outline outline-2 outline-gray-300 rounded-sm mx-0.5 mt-4 mb-3 w-9/10 h-7" id="gradient-bar" style={{background: `linear-gradient(45deg, ${color1}, ${color2})`}}></div>
 
-                            <div popover="true" ref={colorPicker1Ref} onClick={handlePopup1Click}><HexColorPicker color={color1} onChange={setColor1}></HexColorPicker></div>
-                            <div popover="true" ref={colorPicker2Ref} onClick={handlePopup2Click}><HexColorPicker color={color2} onChange={setColor2}></HexColorPicker></div>
+                            <div popover="true" ref={colorPicker1Ref} onClick={handlePopup1Click} style={{position:"absolute", zIndex:"10", top:"73rem"}}><HexColorPicker color={color1} onChange={setColor1}></HexColorPicker></div>
+                            <div popover="true" ref={colorPicker2Ref} onClick={handlePopup2Click} style={{position:"absolute", zIndex:"10", top:"73rem"}}><HexColorPicker color={color2} onChange={setColor2}></HexColorPicker></div>
 
                             <div className="bg-gray-50 pt-5 sm:flex sm:flex-row-reverse sm:items-end">
                                 <button
