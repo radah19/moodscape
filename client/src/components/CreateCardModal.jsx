@@ -26,8 +26,7 @@ export default function CreateCardModal(props) {
     }
 
     const toggleColorPicker1 = (event) => {
-        console.log(colorPicker1Open.current);
-        if (!colorPicker1Open.current) {
+        if (!colorPicker1Open) {
             event.stopPropagation();
             const element = colorPicker1Ref.current;
             if (element) {
@@ -38,7 +37,7 @@ export default function CreateCardModal(props) {
     }
 
     const toggleColorPicker2 = (event) => {
-        if (!colorPicker2Open.current) {
+        if (!colorPicker2Open) {
             event.stopPropagation();
             const element = colorPicker2Ref.current;
             if (element) {
@@ -49,14 +48,14 @@ export default function CreateCardModal(props) {
     }
 
     const closeColorPickers = () => {
-        if (colorPicker1Open.current) {
+        if (colorPicker1Open) {
             const element1 = colorPicker1Ref.current;
             if (element1) {
                 element1.hidePopover();
             }
             setColorPicker1Open(false);
         }
-        if (colorPicker2Open.current) {
+        if (colorPicker2Open) {
             const element2 = colorPicker2Ref.current;
             if (element2) {
                 element2.hidePopover();
@@ -159,8 +158,8 @@ export default function CreateCardModal(props) {
 
                             <div className="outline outline-2 outline-gray-300 rounded-sm mx-0.5 mt-4 mb-3 w-9/10 h-7" id="gradient-bar" style={{background: `linear-gradient(45deg, ${color1}, ${color2})`}}></div>
 
-                            <div popover="true" ref={colorPicker1Ref} onClick={handlePopup1Click} style={{position:"absolute", zIndex:"10", top:"73rem"}}><HexColorPicker color={color1} onChange={setColor1}></HexColorPicker></div>
-                            <div popover="true" ref={colorPicker2Ref} onClick={handlePopup2Click} style={{position:"absolute", zIndex:"10", top:"73rem"}}><HexColorPicker color={color2} onChange={setColor2}></HexColorPicker></div>
+                            <div popover="true" ref={colorPicker1Ref} onClick={handlePopup1Click} style={{position:"fixed", bottom:"200px", zIndex:"10"}}><HexColorPicker color={color1} onChange={setColor1}></HexColorPicker></div>
+                            <div popover="true" ref={colorPicker2Ref} onClick={handlePopup2Click} style={{position:"fixed", bottom:"200px", zIndex:"10"}}><HexColorPicker color={color2} onChange={setColor2}></HexColorPicker></div>
 
                             <div className="bg-gray-50 pt-5 sm:flex sm:flex-row-reverse sm:items-end">
                                 <button
