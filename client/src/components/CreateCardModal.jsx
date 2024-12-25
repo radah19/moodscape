@@ -109,7 +109,7 @@ export default function CreateCardModal(props) {
                             <Menu as="div" className="relative inline-block text-left mt-2 mb-1">
 
                                 <div>
-                                    <MenuButton style={{fontFamily: `${selectedFont}`}} className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                    <MenuButton style={{fontFamily: `${selectedFont}`, fontSize: "1.1em"}} className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                                     {selectedFont}
                                     <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5 text-gray-400" />
                                     </MenuButton>
@@ -117,12 +117,13 @@ export default function CreateCardModal(props) {
 
                                 <MenuItems
                                     transition
-                                    className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                                    style={{position:"fixed", height:"195px", overflowY:"auto"}}
+                                    className="mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                                 >
                                     <div className="py-1">
                                     {selectable_fonts.map((f, index) => (
 
-                                        <MenuItem key={index} value={f.font} style={{fontFamily: `${f.font}`}}>
+                                        <MenuItem key={index} value={f.font} style={{fontFamily: `${f.font}`, fontSize: "1.25em"}}>
                                         <button
                                         type="button"
                                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
@@ -135,6 +136,22 @@ export default function CreateCardModal(props) {
                                     </div>
                                 </MenuItems>
                             </Menu>
+
+                            {/* <select>
+                                {selectable_fonts.map((f, index) => (
+
+                                    <option key={index} value={f.font}>
+                                    <button
+                                    type="button"
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                                    onClick={() => {setSelectedFont(f.font)}}
+                                    style={{fontFamily: `${f.font}`, fontSize: "1.25em"}}
+                                    >
+                                        {f.font}
+                                    </button>
+                                    </option>))
+                                }
+                            </select> */}
 
 
                             <DialogTitle as="h3" className="text-base font-semibold text-gray-900 my-2">
