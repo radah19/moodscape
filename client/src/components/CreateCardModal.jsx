@@ -20,7 +20,6 @@ export default function CreateCardModal(props) {
     const colorPicker2Ref = useRef(null);
     const colorPicker1Open = useRef(false);
     const colorPicker2Open = useRef(false);
-    // const selectedFont = useRef("Arial");
 
     const buttonHandler = () => {
         props.setModalCallback(false)
@@ -33,6 +32,8 @@ export default function CreateCardModal(props) {
             const element = colorPicker1Ref.current;
             if (element) {
                 colorPicker1Open.current = true;
+                element.focus();
+                event.preventDefault();
                 element.showPopover();
             }
         }
@@ -45,6 +46,8 @@ export default function CreateCardModal(props) {
             const element = colorPicker2Ref.current;
             if (element) {
                 colorPicker2Open.current = true;
+                element.focus();
+                event.preventDefault();
                 element.showPopover();
             }
         }
@@ -76,10 +79,6 @@ export default function CreateCardModal(props) {
     const handlePopup2Click = (event) => {
         event.stopPropagation();
     }
-
-    // const changeSelectedFont = (font) => {
-    //     selectedFont.current = font;
-    // }
 
     return (
         <Dialog open={props.open} onClose={buttonHandler} className="relative z-10">
@@ -132,13 +131,13 @@ export default function CreateCardModal(props) {
                                     {selectable_fonts.map((f, index) => (
 
                                         <MenuItem key={index} value={f.font} style={{fontFamily: `${f.font}`}}>
-                                        <a
-                                        href="#"
-                                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                                        <button
+                                        type="button"
+                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
                                         onClick={() => {setSelectedFont(f.font)}}
                                         >
                                             {f.font}
-                                        </a>
+                                        </button>
                                         </MenuItem>))
                                     }
                                     </div>
