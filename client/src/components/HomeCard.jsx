@@ -1,6 +1,7 @@
-import React from 'react';
-import { useState } from 'react';
+// import React from 'react';
+// import { useState } from 'react';
 import './HomeCard.css'
+import PropTypes from 'prop-types';
 
 const HomeCard = (props) => {
 
@@ -13,5 +14,11 @@ const HomeCard = (props) => {
         </div>
     )
 }
+
+HomeCard.propTypes = {
+    font: PropTypes.string,
+    title: PropTypes.string,
+    color_gradient: PropTypes.string
+};
 
 export default HomeCard;
