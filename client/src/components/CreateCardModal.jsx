@@ -15,11 +15,11 @@ export default function CreateCardModal(props) {
     const [color1, setColor1] = useState("#aabbcc");
     const [color2, setColor2] = useState("#aabbcc");
     const [selectedFont, setSelectedFont] = useState("Arial");
+    const [colorPicker1Open, setColorPicker1Open] = useState(false);
+    const [colorPicker2Open, setColorPicker2Open] = useState(false);
 
     const colorPicker1Ref = useRef(null);
     const colorPicker2Ref = useRef(null);
-    const colorPicker1Open = useRef(false);
-    const colorPicker2Open = useRef(false);
 
     const buttonHandler = () => {
         props.setModalCallback(false)
@@ -31,44 +31,37 @@ export default function CreateCardModal(props) {
             event.stopPropagation();
             const element = colorPicker1Ref.current;
             if (element) {
-                colorPicker1Open.current = true;
-                element.focus();
-                event.preventDefault();
+                setColorPicker1Open(true);
                 element.showPopover();
             }
         }
     }
 
     const toggleColorPicker2 = (event) => {
-        console.log(colorPicker2Open.current);
         if (!colorPicker2Open.current) {
             event.stopPropagation();
             const element = colorPicker2Ref.current;
             if (element) {
-                colorPicker2Open.current = true;
-                element.focus();
-                event.preventDefault();
+                setColorPicker2Open(true);
                 element.showPopover();
             }
         }
     }
 
     const closeColorPickers = () => {
-        console.log(colorPicker1Ref.current);
-        console.log(colorPicker2Ref.current);
         if (colorPicker1Open.current) {
             const element1 = colorPicker1Ref.current;
             if (element1) {
                 element1.hidePopover();
             }
-            colorPicker1Open.current = false;
+            setColorPicker1Open(false);
         }
         if (colorPicker2Open.current) {
             const element2 = colorPicker2Ref.current;
             if (element2) {
                 element2.hidePopover();
             }
-            colorPicker2Open.current = false;
+            setColorPicker2Open(false);
         }
     }
 
