@@ -26,6 +26,15 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
 
     const authenticateCredentials = async () => {
         setLoading(true);
+
+        // Input Validation
+        if(username == '' || password == ''){
+            setErrorMsg('Please fill in all the fields before signing in');
+            setShowErrorMsg(true);
+            setLoading(false);
+            return;
+        }
+                
         const csrfToken = Cookies.get('csrftoken');
 
         const options = {
