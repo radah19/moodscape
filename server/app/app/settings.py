@@ -31,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -81,7 +80,7 @@ DB_PWD = str(os.getenv('DB_PWD'))
 HOST = str(os.getenv('HOST'))
 PORT = str(os.getenv('PORT'))
 
-print(DB_USER, DB_PWD, HOST, PORT)
+# print(DB_USER, DB_PWD, HOST, PORT)
 
 
 # Database

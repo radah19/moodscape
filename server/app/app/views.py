@@ -3,6 +3,10 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from app.models import *
 from django.db import connection
+from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
+from django.shortcuts import redirect
 
 def dictfetchall(cursor):
     """
@@ -15,39 +19,56 @@ def dictfetchall(cursor):
 
 def vibe_rooms(request):
 
-    with connection.cursor() as cursor:
-        cursor.execute(
-            """
-            SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
-        """, [])
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data['username']
+        title = data['title']
+        font = data['font']
+        color_gradient = data['color_gradient']
 
-        response_data = {}
-        response_data['result'] = dictfetchall(cursor)
+        print(username, title, font)
 
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO vibe_rooms (created_by, title, color_gradient, font)
+                VALUES (%s, %s, %s, %s)
+            """, [username, title, color_gradient, font])
 
-def vibe_room_user_id(request, user_id):
+        return HttpResponse("Room created", status=201)
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT
+                    id,
+                    user,
+                    title,
+                    color_gradient,
+                    font
+                FROM vibe_rooms
+            """, [])
+
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+def vibe_room_user_id(request, username):
     print('\nREQUEST: ', request, '\n')
     with connection.cursor() as cursor:
         cursor.execute(
             """
             SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
-            WHERE vb.user_id = %s
-        """, [user_id])
+                id,
+                created_by as user,
+                title,
+                color_gradient,
+                font
+            FROM vibe_rooms
+            WHERE created_by = %s
+        """, [username])
     
         response_data = {}
         response_data['result'] = dictfetchall(cursor)
@@ -59,14 +80,13 @@ def vibe_room_room_id(request, room_id):
         cursor.execute(
             """
             SELECT
-                vb.id as id,
-                vb.user_id as user_id,
-                ri.title as title,
-                ri.color_gradient as color_gradient,
-                ri.font as fonts
-            FROM vibe_rooms as vb
-            JOIN room_info as ri on ri.vibe_room_id = vb.id
-            WHERE vb.id = %s
+                id,
+                created_by as user,
+                title,
+                color_gradient,
+                font
+            FROM vibe_rooms
+            WHERE id = %s
         """, [room_id])
 
         response_data = {}
@@ -101,3 +121,35 @@ def media(request, room_id):
         response_data['result'] = dictfetchall(cursor)
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+@csrf_exempt 
+def auth(request):
+    request_data = json.loads(request.body)
+    user = authenticate(username=request_data.get('username', ''), password=request_data.get('password', ''))
+    if user is not None:
+        csrf_token = get_token(request)
+
+        # Sign in User! Celebrations!
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT *
+                FROM users 
+                WHERE username = %s
+            """, [user.username])
+
+            user_info = dictfetchall(cursor)
+
+        return HttpResponse(json.dumps({
+            'username': user.username,
+            'email': user.email,
+            'f_name': user_info[0]['f_name'],
+            'l_name': user_info[0]['l_name'],
+            'csrftoken': csrf_token
+        }), content_type='application/json')
+    else:
+        # Oopsy!
+        return HttpResponse(json.dumps('Oopsy!'), content_type='application/json')
+    
+    
+    

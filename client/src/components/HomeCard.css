@@ -1,0 +1,20 @@
+#tab {
+    display: flex;
+    justify-content: space-between !important;
+    align-items: stretch;
+    height: 8vh;
+    width: 100%;
+}
+
+#tabColor {
+    width: 40%;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+#text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 0.75rem;
+}

@@ -1,0 +1,22 @@
+html, body {
+    width: 100%;
+    background-color: #FFF0F5;
+}
+
+.vibeBarContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    row-gap: 5vh;
+}
+
+#addCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}

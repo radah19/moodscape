@@ -21,9 +21,9 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('vibe_rooms/', views.vibe_rooms, name='vibe_rooms'),
-    path('vibe_rooms_user_id/<int:user_id>/', views.vibe_room_user_id, name='vibe_room_user_id'),
+    path('vibe_rooms_user_id/<str:username>/', views.vibe_room_user_id, name='vibe_room_user_id'),
     path('vibe_rooms_room_id/<int:room_id>/', views.vibe_room_room_id, name='vibe_room'),
     path('song_links/<int:room_id>/', views.song, name='song'),
     path('media/<int:room_id>/', views.media),
-    path("accounts/", include("django.contrib.auth.urls"))
+    path("auth/", views.auth)
 ]
