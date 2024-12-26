@@ -6,6 +6,7 @@ from django.db import connection
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
+from django.shortcuts import redirect
 
 def dictfetchall(cursor):
     """
@@ -18,22 +19,41 @@ def dictfetchall(cursor):
 
 def vibe_rooms(request):
 
-    with connection.cursor() as cursor:
-        cursor.execute(
-            """
-            SELECT
-                id,
-                user,
-                title,
-                color_gradient,
-                font
-            FROM vibe_rooms
-        """, [])
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data['username']
+        title = data['title']
+        font = data['font']
+        color_gradient = data['color_gradient']
 
-        response_data = {}
-        response_data['result'] = dictfetchall(cursor)
+        print(username, title, font)
 
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO vibe_rooms (created_by, title, color_gradient, font)
+                VALUES (%s, %s, %s, %s)
+            """, [username, title, color_gradient, font])
+
+        return HttpResponse("Room created", status=201)
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT
+                    id,
+                    user,
+                    title,
+                    color_gradient,
+                    font
+                FROM vibe_rooms
+            """, [])
+
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def vibe_room_user_id(request, username):
     print('\nREQUEST: ', request, '\n')
