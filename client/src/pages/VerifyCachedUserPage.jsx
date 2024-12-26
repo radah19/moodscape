@@ -25,6 +25,13 @@ const VerifyCachedUserPage = ({setVerifyingCachedUser, setUser}) => {
             // Cookies do exist!
             const cachedUser = JSON.parse(userInCookies);
 
+            if(import.meta.env.VITE_FRONTEND_URL == `http://127.0.0.1:5173`){
+                //Skip for localhost, takes too long 😔
+                setUser(cachedUser);
+                setVerifyingCachedUser(false);
+                return;
+            }
+
             const options = {
                 method: 'POST',
                 headers: {

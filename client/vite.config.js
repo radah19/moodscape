@@ -10,7 +10,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     define: {
-      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(env.BACKEND_URL) //Defines the VITE_BACKEND_URL environment variable from the .env outside the root directory
+      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(env.BACKEND_URL), //Defines the VITE_BACKEND_URL environment variable from the .env outside the root directory
+      'import.meta.env.VITE_FRONTEND_URL': JSON.stringify(env.FRONTEND_URL)
     },
     server: {
       proxy: {
