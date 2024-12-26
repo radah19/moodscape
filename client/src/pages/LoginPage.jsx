@@ -13,12 +13,28 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
     const [loading, setLoading] = useState(false);
     const [showErrorMsg, setShowErrorMsg] = useState(false);
 
+    const cookieOptions = {
+        expires: 1,        
+        secure: true,
+        sameSite: 'Strict',
+        path: '/'
+    };
+
     useEffect(() => {
         rerouteIfLoggedIn();
     }, [user]);
 
     const authenticateCredentials = async () => {
         setLoading(true);
+
+        // Input Validation
+        if(username == '' || password == ''){
+            setErrorMsg('Please fill in all the fields before signing in');
+            setShowErrorMsg(true);
+            setLoading(false);
+            return;
+        }
+                
         const csrfToken = Cookies.get('csrftoken');
 
         const options = {
@@ -44,8 +60,8 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
                 //Login Success!
                 console.log('Login success!');
                 setUser(json);
-                Cookies.set('user', JSON.stringify({...json, password: password}), { expires: 1 });
-                Cookies.set('csrftoken', json.csrftoken, { expires: 1 })
+                Cookies.set('user', JSON.stringify({...json, password: password}), cookieOptions);
+                Cookies.set('csrftoken', json.csrftoken, cookieOptions)
                 navigate("/");
             }
             
