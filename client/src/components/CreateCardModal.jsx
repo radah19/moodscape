@@ -1,13 +1,14 @@
-import { useState, useRef } from 'react'
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { useState, useRef } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import PropTypes from 'prop-types';
+import Cookies from 'js-cookie';
 
 import { HexColorPicker } from "react-colorful";
 import selectable_fonts from "../fonts/fonts.js";
 
 // For font dropdown
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 
 export default function CreateCardModal(props) {
@@ -15,6 +16,7 @@ export default function CreateCardModal(props) {
     const [color1, setColor1] = useState("#aabbcc");
     const [color2, setColor2] = useState("#aabbcc");
     const [selectedFont, setSelectedFont] = useState("Arial");
+    const [title, setTitle] = useState("Title");
     const [colorPicker1Open, setColorPicker1Open] = useState(false);
     const [colorPicker2Open, setColorPicker2Open] = useState(false);
 
@@ -72,6 +74,32 @@ export default function CreateCardModal(props) {
         event.stopPropagation();
     }
 
+    const submitRoom = async () => {
+        console.log(props);
+        try {
+            const csrfToken = Cookies.get('csrftoken');
+            const response = await fetch("/api/vibe_rooms/", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                    'X-CSRFToken': csrfToken},
+                body: JSON.stringify({
+                    username: `${props.username}`,
+                    title: title,
+                    font: selectedFont,
+                    color_gradient: `linear-gradient(45deg, ${color1}, ${color2})`
+                })
+            })
+            console.log(response);
+            if (response.status == 201) {
+                window.location.reload();
+            }
+        }
+        catch {
+            console.log("Could not create room");
+        }
+    }
+
     return (
         <Dialog open={props.open} onClose={buttonHandler} className="relative z-10">
         <DialogBackdrop
@@ -84,9 +112,9 @@ export default function CreateCardModal(props) {
             <DialogPanel
                 onClick={closeColorPickers}
                 transition
-                className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-1/2 sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+                className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-1/4 sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
             >
-                <form>
+                <form onSubmit={submitRoom}>
 
                 <div className="bg-white px-4 pt-5 sm:pb-8 sm:pb-4">
                     <div className="sm:flex sm:items-start">
@@ -98,7 +126,7 @@ export default function CreateCardModal(props) {
                             </DialogTitle>
                             </label>
 
-                            <input type="text" className="outline outline-2 outline-gray-300 focus:outline-pink-300 rounded-sm mx-0.5 my-2 w-full px-0.5 py-0.5" id="title"></input>
+                            <input type="text" onChange={(event) => {setTitle(event.target.value)}} placeholder="Title" value={title} className="outline outline-2 outline-gray-300 focus:outline-pink-300 rounded-sm mx-0.5 my-2 w-full px-1.5 py-0.5" id="title"></input>
 
                             <label htmlFor="font">
                             <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
@@ -109,7 +137,10 @@ export default function CreateCardModal(props) {
                             <Menu as="div" className="relative inline-block text-left mt-2 mb-1">
 
                                 <div>
-                                    <MenuButton style={{fontFamily: `${selectedFont}`, fontSize: "1.1em"}} className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                    <MenuButton 
+                                        className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                        style={{fontFamily: `${selectedFont}`, fontSize: "1.1em"}}
+                                        value={selectedFont}>
                                     {selectedFont}
                                     <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5 text-gray-400" />
                                     </MenuButton>
@@ -137,39 +168,24 @@ export default function CreateCardModal(props) {
                                 </MenuItems>
                             </Menu>
 
-                            {/* <select>
-                                {selectable_fonts.map((f, index) => (
-
-                                    <option key={index} value={f.font}>
-                                    <button
-                                    type="button"
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
-                                    onClick={() => {setSelectedFont(f.font)}}
-                                    style={{fontFamily: `${f.font}`, fontSize: "1.25em"}}
-                                    >
-                                        {f.font}
-                                    </button>
-                                    </option>))
-                                }
-                            </select> */}
-
-
                             <DialogTitle as="h3" className="text-base font-semibold text-gray-900 my-2">
                                 Background Color Gradient
                             </DialogTitle>
 
                             <button
                                 type="button"
-                                className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 sm:mr-3 sm:w-auto"
                                 style={{backgroundColor:`${color1}`}}
-                                onClick={toggleColorPicker1}>
+                                value={color1}
+                                onClick={toggleColorPicker1}
+                                className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 sm:mr-3 sm:w-auto">
                                     Color 1
                             </button>
                             <button
                                 type="button"
-                                className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 sm:my-2 sm:w-auto"
                                 style={{backgroundColor:`${color2}`}}
-                                onClick={toggleColorPicker2}>
+                                value={color2}
+                                onClick={toggleColorPicker2}
+                                className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 sm:my-2 sm:w-auto">
                                     Color 2
                             </button>
 
@@ -211,5 +227,6 @@ export default function CreateCardModal(props) {
 
 CreateCardModal.propTypes = {
     open: PropTypes.bool,
-    setModalCallback: PropTypes.func
+    setModalCallback: PropTypes.func,
+    username: PropTypes.string,
 };
