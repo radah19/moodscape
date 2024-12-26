@@ -7,6 +7,13 @@ import PuffLoader from "react-spinners/PuffLoader";
 const VerifyCachedUserPage = ({setVerifyingCachedUser, setUser}) => {
     const navigate = useNavigate();
 
+    const cookieOptions = {
+        expires: 1,        
+        secure: true,
+        sameSite: 'Strict',
+        path: '/'
+    };
+
     useEffect(() => {
         authenticateCredentials();
     }, []);
@@ -42,8 +49,8 @@ const VerifyCachedUserPage = ({setVerifyingCachedUser, setUser}) => {
                     setUser(cachedUser);
 
                     // Reset the cookies to take another day to expire
-                    Cookies.set('user', JSON.stringify(cachedUser), { expires: 1 });
-                    Cookies.set('csrftoken', cachedUser.csrftoken, { expires: 1 });
+                    Cookies.set('user', JSON.stringify(cachedUser), cookieOptions);
+                    Cookies.set('csrftoken', cachedUser.csrftoken, cookieOptions);
                 }
                 
             } catch (e) {
