@@ -5,6 +5,7 @@ import './App.css'
 import LoginPage from './pages/LoginPage';
 import VerifyCachedUserPage from './pages/VerifyCachedUserPage';
 import RoomPage from './pages/RoomPage';
+import CreateAccountPage from './pages/CreateAccountPage';
 
 function App() {
   const defaultUser = {
@@ -27,6 +28,10 @@ function App() {
     {
       path: '/login', // Login Path!!!!!
       element: <LoginPage user={user} setUser={setUser} rerouteIfLoggedIn={rerouteIfLoggedIn}/>
+    },
+    {
+      path: '/create_account', // Create Account Path!!!!!
+      element: <CreateAccountPage user={user} setUser={setUser} rerouteIfLoggedIn={rerouteIfLoggedIn}/>
     },
     {
       path: '/room/:id', // Room Path!!!!!
