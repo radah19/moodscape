@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from app.models import *
 from django.db import connection
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 
@@ -105,7 +106,7 @@ def media(request, room_id):
 @csrf_exempt 
 def auth(request):
     request_data = json.loads(request.body)
-    user = authenticate(username=request_data.get('username', ''), password=request_data.get('password', ''))
+    user = authenticate(username=request_data['username'], password=request_data['password'])
     if user is not None:
         csrf_token = get_token(request)
 
@@ -126,10 +127,34 @@ def auth(request):
             'f_name': user_info[0]['f_name'],
             'l_name': user_info[0]['l_name'],
             'csrftoken': csrf_token
-        }), content_type='application/json')
+        }), content_type='application/json', status=202)
     else:
         # Oopsy!
-        return HttpResponse(json.dumps('Oopsy!'), content_type='application/json')
+        return HttpResponse(json.dumps('Oopsy!'), content_type='application/json', status=401)
     
+def create_account(request):
+    request_data = json.loads(request.body)
+
+    # Verify username is not taken
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT count(*)
+            FROM users 
+            WHERE username = %s
+        """, request_data['username'])
+        count = cursor.fetchone()
+
+    if(count == 1):
+        print('ave mariiiiaaaa')
+        return HttpResponse(json.dumps('Provided username has already been taken, try another one'), content_type='application/json', status=401)
     
-    
+    # Create User !
+    User.objects.create_user(request_data['username'], request_data['email'], request_data['password'])
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            INSERT INTO users (username, f_name, l_name) VALUES 
+            (%s, %s, %s),
+        """, [request_data['username'], request_data['f_name'], request_data['l_name']])
