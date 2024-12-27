@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
+import validator from 'validator';
 
 const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
     const navigate = useNavigate();
@@ -36,11 +37,13 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
         // Input Validation ----------------------------------------------------------------------------
 
         //Blank Fields or Fields too large
-        fields.forEach((f) => {
+        let invalidFields = false;
+        fields.forEach((f) => {            
             if(f == ''){
                 setErrorMsg('Please fill in all the fields before signing in');
                 setShowErrorMsg(true);
                 setLoading(false);
+                invalidFields = true;
                 return;
             }
 
@@ -48,15 +51,32 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
                 setErrorMsg('One or more fields is too large! Max character length is 255');
                 setShowErrorMsg(true);
                 setLoading(false);
+                invalidFields = true;
                 return;
             }
         })
 
+        if(invalidFields) return;
+
         //Passwords don't match
+        if(password != password2){
+            setErrorMsg('Passwords do not match, please reenter the passwords');
+            setShowErrorMsg(true);
+            setLoading(false);
+            return;
+        }
 
         //Invalid Email
+        if(!validator.isEmail(email)){
+            setErrorMsg('Invalid email entered, please try again');
+            setShowErrorMsg(true);
+            setLoading(false);
+            return;
+        }
         
         // All validation passed! ----------------------------------------------------------------------------
+        setShowErrorMsg(false);
+        
         const csrfToken = Cookies.get('csrftoken');
 
         const options = {
@@ -67,7 +87,10 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
             },
             body: JSON.stringify({
                 username: username, 
-                password: password
+                email: email,
+                password: password,
+                fname: fname,
+                lname: lname
             })     
         }
 
@@ -84,7 +107,7 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
 
     return (
         <div style={{width:'30rem'}}>
-            <form className={"bg-white shadow-md rounded px-8 pt-6 pb-8 mb-2" + (showErrorMsg ? " border border-red-500" : "")}>
+            <form className={"bg-white shadow-md text-left rounded px-8 pt-6 pb-8 mb-2" + (showErrorMsg ? " border border-red-500" : "")}>
 
                 {/* Username Field */}
                 <div className="mb-2">

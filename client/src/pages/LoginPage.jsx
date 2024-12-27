@@ -35,6 +35,8 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
             return;
         }
                 
+        setShowErrorMsg(false);
+        
         const csrfToken = Cookies.get('csrftoken');
 
         const options = {
@@ -76,7 +78,7 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
 
     return (
         <div style={{width:'30rem'}}>
-            <form className={"bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" + (showErrorMsg ? " border border-red-500" : "")}>
+            <form className={"bg-white shadow-md text-left rounded px-8 pt-6 pb-8 mb-4" + (showErrorMsg ? " border border-red-500" : "")}>
 
                 {/* Username Field */}
                 <div className="mb-4">
