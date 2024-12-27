@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage'
 import './App.css'
 import LoginPage from './pages/LoginPage';
 import VerifyCachedUserPage from './pages/VerifyCachedUserPage';
+import RoomPage from './pages/RoomPage';
 
 function App() {
   const defaultUser = {
@@ -26,6 +27,14 @@ function App() {
     {
       path: '/login', // Login Path!!!!!
       element: <LoginPage user={user} setUser={setUser} rerouteIfLoggedIn={rerouteIfLoggedIn}/>
+    },
+    {
+      path: '/room/:id', // Room Path!!!!!
+      element: <RoomPage user={user} />
+    },
+    {
+      path: '*', // 404 Page!!!!!!!! Oopsy 😋
+      element: <div><p>No Page Found! Oops!</p></div>
     }
   ]);
 
