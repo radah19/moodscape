@@ -94,6 +94,24 @@ def vibe_room_room_id(request, room_id):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+def vibe_room_update_room_id(request, room_id):
+    data = json.loads(request.body)
+    title = data['title']
+    font = data['font']
+    color_gradient = data['color_gradient']
+
+    print(data, title, font, color_gradient, room_id)
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            UPDATE vibe_rooms
+            SET title = %s, color_gradient = %s, font = %s
+            WHERE id = %s
+        """, [title, color_gradient, font, room_id])
+    
+    return HttpResponse("Room updated", status=201)
+
 def song(request, room_id):
     with connection.cursor() as cursor:
         cursor.execute(
