@@ -19,6 +19,7 @@ def dictfetchall(cursor):
 
 
 def vibe_rooms(request):
+    # print('\nREQUEST: ', request, '\n')
 
     if request.method == "POST":
         data = json.loads(request.body)
@@ -27,16 +28,19 @@ def vibe_rooms(request):
         font = data['font']
         color_gradient = data['color_gradient']
 
-        print(username, title, font)
-
         with connection.cursor() as cursor:
             cursor.execute(
                 """
                 INSERT INTO vibe_rooms (created_by, title, color_gradient, font)
                 VALUES (%s, %s, %s, %s)
+                RETURNING id
             """, [username, title, color_gradient, font])
 
-        return HttpResponse("Room created", status=201)
+            id = cursor.fetchone()[0]
+
+        return HttpResponse(json.dumps({
+            'id':id
+            }), status=201)
 
     else:
         with connection.cursor() as cursor:
@@ -57,7 +61,7 @@ def vibe_rooms(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def vibe_room_user_id(request, username):
-    print('\nREQUEST: ', request, '\n')
+    # print('\nREQUEST: ', request, '\n')
     with connection.cursor() as cursor:
         cursor.execute(
             """
