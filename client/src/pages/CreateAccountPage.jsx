@@ -76,7 +76,7 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
         
         // All validation passed! ----------------------------------------------------------------------------
         setShowErrorMsg(false);
-        
+
         const csrfToken = Cookies.get('csrftoken');
 
         const options = {
@@ -89,13 +89,39 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
                 username: username, 
                 email: email,
                 password: password,
-                fname: fname,
-                lname: lname
+                f_name: fname,
+                l_name: lname
             })     
         }
 
         try {
+            const response = await fetch(`/api/create_account/`, options);
+            const json = await response.json();
             
+            if(response.status == 401){
+                //Failed!!
+                setErrorMsg('Username was already taken, please try again!');
+                setShowErrorMsg(true);
+            } else {
+                //Succeeded!!
+                setUser({
+                    username: username, 
+                    email: email,
+                    f_name: fname,
+                    l_name: lname
+                });
+                Cookies.set('user', JSON.stringify({
+                    username: username, 
+                    email: email,
+                    f_name: fname,
+                    l_name: lname,
+                    csrftoken: json.csrfToken,
+                    password: password
+                }), cookieOptions);
+                Cookies.set('csrftoken', json.csrftoken, cookieOptions);
+                navigate('/');
+            }
+
             setLoading(false);
         } catch (e) {
             console.error('Error in account creation: ', e);

@@ -151,7 +151,8 @@ def auth(request):
     else:
         # Oopsy!
         return HttpResponse(json.dumps('Oopsy!'), content_type='application/json', status=401)
-    
+
+@csrf_exempt
 def create_account(request):
     request_data = json.loads(request.body)
 
@@ -159,22 +160,25 @@ def create_account(request):
     with connection.cursor() as cursor:
         cursor.execute(
             """
-            SELECT count(*)
-            FROM users 
-            WHERE username = %s
-        """, request_data['username'])
-        count = cursor.fetchone()
+            SELECT count(username) FROM users WHERE username = %s
+            UNION SELECT count(username) FROM auth_user WHERE username = %s
+        """, [request_data['username'], request_data['username']])
+        count = cursor.fetchone()[0]
 
     if(count == 1):
-        print('ave mariiiiaaaa')
         return HttpResponse(json.dumps('Provided username has already been taken, try another one'), content_type='application/json', status=401)
     
     # Create User !
+    csrf_token = get_token(request)
     User.objects.create_user(request_data['username'], request_data['email'], request_data['password'])
 
     with connection.cursor() as cursor:
         cursor.execute(
             """
             INSERT INTO users (username, f_name, l_name) VALUES 
-            (%s, %s, %s),
+            (%s, %s, %s)
         """, [request_data['username'], request_data['f_name'], request_data['l_name']])
+    
+    return HttpResponse(json.dumps({
+        'csrf_token': csrf_token
+        }), content_type='application/json', status=201)

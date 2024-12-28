@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
+import validator from 'validator';
 
 const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
     const navigate = useNavigate();
@@ -36,7 +37,7 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
         }
                 
         setShowErrorMsg(false);
-        
+
         const csrfToken = Cookies.get('csrftoken');
 
         const options = {
@@ -63,7 +64,7 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
                 console.log('Login success!');
                 setUser(json);
                 Cookies.set('user', JSON.stringify({...json, password: password}), cookieOptions);
-                Cookies.set('csrftoken', json.csrftoken, cookieOptions)
+                Cookies.set('csrftoken', json.csrftoken, cookieOptions);
                 navigate("/");
             }
             
