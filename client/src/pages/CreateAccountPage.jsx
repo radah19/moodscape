@@ -58,6 +58,15 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
 
         if(invalidFields) return;
 
+        //Username or password contain spaces/quotes
+        if( validator.contains(username, " ") || validator.contains(username, "\"") || validator.contains(username, "'") ||
+            validator.contains(password, " ") || validator.contains(password, "\"") || validator.contains(password, "'")){
+            setErrorMsg('Username/Password cannot contain spaces or quotes');
+            setShowErrorMsg(true);
+            setLoading(false);
+            return;
+        }
+
         //Passwords don't match
         if(password != password2){
             setErrorMsg('Passwords do not match, please reenter the passwords');
@@ -100,7 +109,7 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
             
             if(response.status == 401){
                 //Failed!!
-                setErrorMsg('Username was already taken, please try again!');
+                setErrorMsg('Username was already taken, please try a new username!');
                 setShowErrorMsg(true);
             } else {
                 //Succeeded!!

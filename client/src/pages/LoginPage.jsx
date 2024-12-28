@@ -28,16 +28,35 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
     const authenticateCredentials = async () => {
         setLoading(true);
 
-        // Input Validation
+        // Input Validation ----------------------------------------------------------------------------
+
+        //Blank Fields or Fields too large
         if(username == '' || password == ''){
             setErrorMsg('Please fill in all the fields before signing in');
             setShowErrorMsg(true);
             setLoading(false);
             return;
         }
-                
-        setShowErrorMsg(false);
 
+        if(username.length > 255 || password.length > 255){
+            setErrorMsg('One or more fields is too large! Max character length is 255');
+            setShowErrorMsg(true);
+            setLoading(false);
+            return;
+        }
+
+        //Username or password contain spaces/quotes
+        if( validator.contains(username, " ") || validator.contains(username, "\"") || validator.contains(username, "'") ||
+            validator.contains(password, " ") || validator.contains(password, "\"") || validator.contains(password, "'")){
+            setErrorMsg('Username/Password cannot contain spaces or quotes');
+            setShowErrorMsg(true);
+            setLoading(false);
+            return;
+        }
+                
+        // All validation passed! ----------------------------------------------------------------------------
+        setShowErrorMsg(false);
+        
         const csrfToken = Cookies.get('csrftoken');
 
         const options = {
