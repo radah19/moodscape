@@ -26,5 +26,6 @@ urlpatterns = [
     path('vibe_room_update_room_id/<int:room_id>/', views.vibe_room_update_room_id),
     path('song_links/<int:room_id>/', views.song, name='song'),
     path('media/<int:room_id>/', views.media),
+    path('edit_media/<int:media_id>/', views.edit_media),
     path("auth/", views.auth)
 ]

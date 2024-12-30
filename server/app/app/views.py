@@ -127,18 +127,69 @@ def song(request, room_id):
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def media(request, room_id):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        img_link = data['img_link']
+        txt = data['txt']
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO media (vibe_room_id, img_link, txt)
+                VALUES (%s, %s, %s)
+                returning id
+            """, [room_id, img_link, txt])
+
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+        
+        return HttpResponse(json.dumps(response_data), content_type='application/json', status=201)
+    
+    if request.method == "DELETE":
+        print(room_id)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                DELETE FROM media
+                WHERE id = %s
+                returning id
+            """, [room_id]) # media_id is passed in to room_id
+
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json', status=200)
+    
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT *
+                FROM media 
+                WHERE vibe_room_id = %s
+            """, [room_id])
+
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    
+def edit_media(request, media_id):
+    data = json.loads(request.body)
+    img_link = data['img_link']
+    txt = data['txt']
     with connection.cursor() as cursor:
         cursor.execute(
             """
-            SELECT *
-            FROM media 
-            WHERE vibe_room_id = %s
-        """, [room_id])
+            UPDATE media
+            SET img_link = %s, txt = %s
+            WHERE id = %s
+            returning id
+        """, [img_link, txt, media_id])
 
         response_data = {}
         response_data['result'] = dictfetchall(cursor)
-
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+    
+    return HttpResponse(json.dumps(response_data), content_type='application/json', status=201)
 
 @csrf_exempt 
 def auth(request):

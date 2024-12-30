@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useParams } from "react-router"
 import PuffLoader from "react-spinners/PuffLoader";
 import CustomizeRoomModal from "../components/CustomizeRoomModal";
+import MediaModal from "../components/MediaModal";
 
 const RoomPage = (props) => {
     const {id} = useParams();
@@ -58,6 +59,18 @@ const RoomPage = (props) => {
         setCustomizeRoomModalOpen(true);
     }
 
+    const setMediaModalCallback = (state) => {
+        setMediaModalOpen(state);
+    }
+
+    const openMediaModal = () => {
+        setMediaModalOpen(true);
+    }
+
+    const setMediaListCallback = (state) => {
+        setMediaList(state);
+    }
+
     return (
         <div>
         {
@@ -91,11 +104,17 @@ const RoomPage = (props) => {
                     color2={color2}
                     room_id={parseInt(id)}></CustomizeRoomModal>
                 {/* Button to add Media - be it image or quote or something else :3 */}
-                <button id="add_media">
+                <button onClick={openMediaModal} id="add_media">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                     </svg>
                 </button>
+                <MediaModal
+                    open={mediaModalOpen}
+                    setModalCallback={setMediaModalCallback}
+                    mediaList={mediaList}
+                    setMediaListCallback={setMediaListCallback}
+                    room_id={parseInt(id)}></MediaModal>
             </div>
         }
         </div> 
