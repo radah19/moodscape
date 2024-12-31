@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { useParams } from "react-router"
 import PuffLoader from "react-spinners/PuffLoader";
+import SpotifyLinkPlayer from "../components/SpotifyLinkPlayer";
 
 const RoomPage = (props) => {
     const {id} = useParams();
@@ -51,7 +52,9 @@ const RoomPage = (props) => {
             :
             <div>
                 {/* Spotify Player */}
-                <div id="spotify_player"> </div>
+                <div id="spotify_player">
+                    <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} curTrack={curTrack} setCurTrack={setCurTrack} />
+                </div>
                 {/* Slideshow */}
                 <div id="slideshow"></div>
                 {/* Button to change Colors, Title, Font */}

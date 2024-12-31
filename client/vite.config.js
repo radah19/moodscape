@@ -18,6 +18,10 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: env.BACKEND_URL,
           rewrite: (path) => path.replace(/^\/api/, ''), //This will just allow it such that the 'api' part will be removed when querying the backend
+        },
+        '/spotify': {
+          target: 'https://open.spotify.com',
+          rewrite: (path) => path.replace(/^\/spotify/, ''), //This will just allow it such that the 'api' part will be removed when querying the backend
         }
       }
     }
