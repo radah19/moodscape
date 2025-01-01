@@ -10,8 +10,8 @@ const RoomPage = (props) => {
     const [roomInfo, setRoomInfo] = useState({title:'', color_gradient:'', font:''});
     const [mediaList, setMediaList] = useState([]);
     const [curMedia, setCurMedia] = useState({image:'', text:''});
-    const [trackList, setTrackList] = useState([]);
-    const [curTrack, setCurTrack] = useState({link:''});
+    const [trackList, setTrackList] = useState([]); // Class Template: {link:''}
+    const [curTrack, setCurTrack] = useState(-1);
 
     const [loading, setLoading] = useState(false);
     

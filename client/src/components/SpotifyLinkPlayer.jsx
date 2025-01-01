@@ -3,67 +3,90 @@ import PropTypes from 'prop-types';
 import { Spotify } from 'react-spotify-embed';
 
 const SpotifyLinkPlayer = (props) => {
-    const [spotifyLink, setSpotifyLink] = useState("https://open.spotify.com/track/6cT2EfDtHeBkZR7e4cCSY5");
+    const [spotifyLink, setSpotifyLink] = useState("https://open.spotify.com/track/6cT2EfDtHeBkZR7e4cCSY5?play=true");
 
     const embedRef = useRef(null);
     const embedControllerRef = useRef(null);
 
     useEffect(() => {
-        // const element = document.getElementById('embed-iframe');
-        // setPlayer(element);
+        // Load the Spotify IFrame API script
+        const script = document.createElement("script");
+        script.src = "https://open.spotify.com/embed-podcast/iframe-api/v1";
+        script.async = true;
+        document.body.appendChild(script);
 
+        // Initialize the API when the script loads
         window.onSpotifyIframeApiReady = (IFrameAPI) => {
-            const element = embedRef.current;
-
+            const element = document.getElementById('embed-iframe');
             const options = {
+                width: '100%',
                 height: '150',
                 uri: spotifyLink
             };
 
-            const callback = (controller) => {
-                embedControllerRef.current = controller;
+            const callback = (EmbedController) => {
+                embedControllerRef.current = EmbedController;
+                
+                // Add listeners for player events
+                EmbedController.addListener('playback_update', e => {
+                    console.log('Playback update:', e);
+                });
 
-                controller.addListener('ready', () => {
-                    console.log('The Embed has initialized');
-                    console.log(controller);
-                    controller.play();
+                EmbedController.addListener('ready', () => {
+                    console.log('Embed ready');
                 });
             };
 
             IFrameAPI.createController(element, options, callback);
         };
 
+        // Cleanup
+        return () => {
+            document.body.removeChild(script);
+        };
     }, []);
 
     const togglePlay = () => {
-        console.log('Apt apt apt');
-        embedControllerRef.current.play();
+        if (embedControllerRef.current) {
+            embedControllerRef.current.togglePlay();
+        }
     };
 
     const toggleStop = () => {
-        console.log('STOPPPPP NOOO');
-        embedControllerRef.current.pause();
+        if (embedControllerRef.current) {
+            embedControllerRef.current.pause();
+        }
     };
 
     const newLink = () => {
-        console.log('Next please !!');
-        embedControllerRef.current.loadUri('https://open.spotify.com/track/0xPQY512qhU5uEZuptw1jP', false, 0);
+        if (embedControllerRef.current) {
+            embedControllerRef.current.loadUri('spotify:track:0xPQY512qhU5uEZuptw1jP');
+        }
     };
 
     return (
-        <div>
-            <iframe
-                ref={embedRef}
-                src={spotifyLink}
-                width="100%"
-                height="150"
-                frameBorder="0"
-                allow="encrypted-media; autoplay; clipboard-write"
-                className="rounded-lg"
-            />
-            <button onClick={togglePlay}>Toggle Play</button>
-            <button onClick={toggleStop}>Toggle Stop</button>
-            <button onClick={newLink}>New Link</button>
+        <div className="w-full max-w-xl">
+            <div id="embed-iframe" ref={embedRef} className="rounded-lg"/>
+            <div className="flex gap-2 mt-4">
+                <button 
+                    onClick={togglePlay}
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                    Play/Pause
+                </button>
+                <button 
+                    onClick={toggleStop}
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                >
+                    Stop
+                </button>
+                <button 
+                    onClick={newLink}
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                    New Track
+                </button>
+            </div>
         </div>
     );
 }
