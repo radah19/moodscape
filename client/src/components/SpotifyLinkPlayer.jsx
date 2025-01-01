@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Spotify } from 'react-spotify-embed';
 
 const SpotifyLinkPlayer = (props) => {
-    const [spotifyLink, setSpotifyLink] = useState("https://open.spotify.com/track/6cT2EfDtHeBkZR7e4cCSY5?play=true");
+    const [spotifyLink, setSpotifyLink] = useState("https://open.spotify.com/track/6cT2EfDtHeBkZR7e4cCSY5");
 
     const embedRef = useRef(null);
     const embedControllerRef = useRef(null);
@@ -11,7 +11,7 @@ const SpotifyLinkPlayer = (props) => {
     useEffect(() => {
         // Load the Spotify IFrame API script
         const script = document.createElement("script");
-        script.src = "https://open.spotify.com/embed-podcast/iframe-api/v1";
+        script.src = "https://open.spotify.com/embed/iframe-api/v1";
         script.async = true;
         document.body.appendChild(script);
 
@@ -66,7 +66,7 @@ const SpotifyLinkPlayer = (props) => {
 
     return (
         <div className="w-full max-w-xl">
-            <div id="embed-iframe" ref={embedRef} className="rounded-lg"/>
+            <div id="embed-iframe" ref={embedRef} allow="encrypted-media; autoplay; clipboard-write; set-cookies" className="rounded-lg"/>
             <div className="flex gap-2 mt-4">
                 <button 
                     onClick={togglePlay}
