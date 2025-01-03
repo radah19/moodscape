@@ -36,7 +36,7 @@ const SpotifyLinkPlayer = (props) => {
                 EmbedController.addListener('playback_update', e => {
                     // console.log('Playback update:', e);
                     if(e.data.position >= e.data.duration){
-                        nextTrack();
+                        document.getElementById('spot-forward-button').click();
                     }
                 });
 
@@ -99,7 +99,7 @@ const SpotifyLinkPlayer = (props) => {
 
     const shuffleTracklist = () => {
         const newArr = props.trackList.sort( () => Math.random()-0.5 );
-        props.setTrackList(newArr);
+        props.setTrackList([...newArr]);
         setCurIndex(0);
         loadURI(getURIFromSpotifyLink(props.trackList[curIndex].link));
     }
