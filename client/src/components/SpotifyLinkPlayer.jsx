@@ -105,10 +105,13 @@ const SpotifyLinkPlayer = (props) => {
     }
 
     return (
-        <div className="w-full max-w-xl flex justify-center items-center flex-col">
-            <div id="embed-iframe" ref={embedRef} allow="encrypted-media; autoplay; clipboard-write; set-cookies" className="rounded-none"/>
+        <div className="w-80 max-w-xl flex justify-center items-center flex-col">
+            
+            <div className="w-full rounded-t-xl bg-green-500">
+                <div id="embed-iframe" ref={embedRef} allow="encrypted-media; autoplay; clipboard-write; set-cookies"/>
+            </div>
 
-            <div className="w-11/12">
+            <div className="w-full">
                 {/* Options */}
                 <div className="flex h-6">
                     {/* Playlist Toggle */}
