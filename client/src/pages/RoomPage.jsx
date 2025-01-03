@@ -11,7 +11,6 @@ const RoomPage = (props) => {
     const [mediaList, setMediaList] = useState([]);
     const [curMedia, setCurMedia] = useState({image:'', text:''});
     const [trackList, setTrackList] = useState([]); // Class Template: {link:''}
-    const [curTrack, setCurTrack] = useState(-1);
 
     const tempMediaLs = [
         {
@@ -71,7 +70,6 @@ const RoomPage = (props) => {
             const trackListResponseJSON = await trackListResponse.json();
             setTrackList(trackListResponseJSON.result);
             setTrackList(tempMediaLs); //DELETE THIS WHEN TRACK ADDING FUNCTIONAILITY IS IN PLACE
-            setCurTrack(trackListResponseJSON.result[0]);
         }
 
         fetchData();
@@ -94,7 +92,7 @@ const RoomPage = (props) => {
             <div>
                 {/* Spotify Player */}
                 <div id="spotify_player">
-                    <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} curTrack={curTrack} setCurTrack={setCurTrack} />
+                    <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} />
                 </div>
                 {/* Slideshow */}
                 <div id="slideshow"></div>
