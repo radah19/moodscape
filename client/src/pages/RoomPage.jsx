@@ -13,6 +13,45 @@ const RoomPage = (props) => {
     const [trackList, setTrackList] = useState([]); // Class Template: {link:''}
     const [curTrack, setCurTrack] = useState(-1);
 
+    const tempMediaLs = [
+        {
+            id:1, 
+            name:"lalala", 
+            link:"https://open.spotify.com/track/7Jnmgy3B3QK4DaTToC5Ejs", 
+            img:"https://images.unsplash.com/photo-1610177498573-78deaa4a797b?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            id:2, 
+            name:"Vengegrov!!!", 
+            link:"https://open.spotify.com/track/6JuCYAloN3d0KCAaBaovxO",
+            img:"https://plus.unsplash.com/premium_photo-1676299910876-747eeb0c11dc?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            id:3, 
+            name:"lalala", 
+            link:"https://open.spotify.com/track/7Jnmgy3B3QK4DaTToC5Ejs", 
+            img:"https://images.unsplash.com/photo-1610177498573-78deaa4a797b?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            id:4, 
+            name:"Raching ma Inoff", 
+            link:"https://open.spotify.com/track/7Jnmgy3B3QK4DaTToC5Ejs",
+            img:"https://plus.unsplash.com/premium_photo-1676299910876-747eeb0c11dc?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            id:5, 
+            name:"lalala", 
+            link:"https://open.spotify.com/track/7Jnmgy3B3QK4DaTToC5Ejs", 
+            img:"https://images.unsplash.com/photo-1610177498573-78deaa4a797b?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            id:6, 
+            name:"Raching ma Inoff", 
+            link:"https://open.spotify.com/track/7Jnmgy3B3QK4DaTToC5Ejs",
+            img:"https://plus.unsplash.com/premium_photo-1676299910876-747eeb0c11dc?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
+    ];
+
     const [loading, setLoading] = useState(false);
     
     useEffect(() => {
@@ -31,10 +70,12 @@ const RoomPage = (props) => {
             const trackListResponse = await fetch(`/api/song_links/${id}/`); 
             const trackListResponseJSON = await trackListResponse.json();
             setTrackList(trackListResponseJSON.result);
+            setTrackList(tempMediaLs); //DELETE THIS WHEN TRACK ADDING FUNCTIONAILITY IS IN PLACE
             setCurTrack(trackListResponseJSON.result[0]);
         }
 
         fetchData();
+
         setLoading(false);
     }, []);
 
