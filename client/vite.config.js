@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) => path.replace(/^\/api/, ''), //This will just allow it such that the 'api' part will be removed when querying the backend
         },
         '/spotify': {
-          target: 'https://open.spotify.com',
+          target: 'https://api.spotify.com',
           rewrite: (path) => path.replace(/^\/spotify/, ''), //This will just allow it such that the 'api' part will be removed when querying the backend
         }
       }

@@ -7,10 +7,8 @@ const SpotifyLinkPlayer = (props) => {
     const [curIndex, setCurIndex] = useState(0);
     const [hidePlaylist, setHidePlaylist] = useState(true);
 
-    // const [cookies, setCookies] = useState(JSON.parse(Cookies.get('spotify_cookies', false)));
-    const [cookies, setCookies] = useState(true);
-    // const [toastOpen, setToastOpen] = useState(JSON.parse(Cookies.get('toastOpen', true)));
-    const [toastOpen, setToastOpen] = useState(true);
+    const [cookies, setCookies] = useState( (Cookies.get('spotify_cookies') != undefined) ? JSON.parse(Cookies.get('spotify_cookies')) : false );
+    const [toastOpen, setToastOpen] = useState( (Cookies.get('toastOpen') != undefined) ? JSON.parse(Cookies.get('toastOpen')) : true );
 
     const embedRef = useRef(null);
     const embedControllerRef = useRef(null);
