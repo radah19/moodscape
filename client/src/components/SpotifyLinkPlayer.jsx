@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import validator from 'validator';
+import { Buffer } from 'buffer';
 
 const SpotifyLinkPlayer = (props) => {
     const [curIndex, setCurIndex] = useState(0);
@@ -10,14 +11,21 @@ const SpotifyLinkPlayer = (props) => {
     const [cookies, setCookies] = useState( (Cookies.get('spotify_cookies') != undefined) ? JSON.parse(Cookies.get('spotify_cookies')) : false );
     const [toastOpen, setToastOpen] = useState( (Cookies.get('toastOpen') != undefined) ? JSON.parse(Cookies.get('toastOpen')) : true );
 
+    const [trackInfoList, setTrackInfoList] = useState([]);
+
     const embedRef = useRef(null);
     const embedControllerRef = useRef(null);
 
     useEffect(() => {
+
+        console.log(props);
+
+
         // Bounce if tracklist is empty
         if(!props.trackList[0]){
             return;
         }
+
 
         // Load the Spotify IFrame API script
         const script = document.createElement("script");
@@ -30,7 +38,7 @@ const SpotifyLinkPlayer = (props) => {
             const element = document.getElementById('embed-iframe');
             const options = {
                 height:'80',
-                uri: getURIFromSpotifyLink(props.trackList[0].link)
+                uri: getURIFromSpotifyLink(props.trackList[0].song_link)
             };
 
             const callback = (EmbedController) => {
@@ -52,11 +60,94 @@ const SpotifyLinkPlayer = (props) => {
             IFrameAPI.createController(element, options, callback);
         };
 
+
+
+        // Get spotify access token
+        const getAccessToken = async () => {
+            const credentials = Buffer.from(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`).toString('base64');
+        
+            const response = await fetch('https://accounts.spotify.com/api/token', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Basic ${credentials}`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    grant_type: 'client_credentials'
+                })
+            });
+
+            const responseJSON = await response.json();
+            const data = await responseJSON.access_token;
+
+            return data;
+        }
+
+        // Get track details & put them into an array
+        async function getTrackDetails(arr) {
+
+            const access_token = await getAccessToken();
+
+            const temp_arr = [];
+
+            arr.forEach(async (track) => {
+
+                const temp = track.song_link.split('/');
+                const track_id = temp[temp.length - 1];
+
+                try {
+                    const response = await fetch(`https://api.spotify.com/v1/tracks/${track_id}`, {
+                        method: 'GET',
+                        headers: { 'Authorization': 'Bearer ' + access_token },
+                    });
+    
+                    if (response.status == 404) { // track not found
+    
+                        console.log("Track not found!");
+    
+                        temp_arr.push({
+                            id: track.id,
+                            name: "Oops", 
+                            link: track.song_link,
+                            img: "https://plus.unsplash.com/premium_photo-1677545183884-421157b2da02?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        });
+                        
+                    } else {
+                        const responseJSON = await response.json();
+        
+                        temp_arr.push({
+                            id: track.id,
+                            name: responseJSON.name, 
+                            link: track.song_link,
+                            img: responseJSON.album.images[0].url
+                        });
+                    }
+                }
+
+                catch (e) {
+                    console.log(e);
+                };
+            });
+
+            return temp_arr;
+        }
+
+
+
+        // Function to get track info array and set trackInfoList to the returned array
+        async function fetchTrackInfo() {
+            const data = await getTrackDetails(props.trackList);
+            setTrackInfoList(data);
+        }
+        fetchTrackInfo();
+
+
+
         // Cleanup
         return () => {
             document.body.removeChild(script);
         };
-    }, [props.trackList]);
+    }, [props]);
 
 
     function getURIFromSpotifyLink(link){
@@ -86,7 +177,7 @@ const SpotifyLinkPlayer = (props) => {
             temp = 0;
 
         setCurIndex(temp);
-        loadURI(getURIFromSpotifyLink(props.trackList[temp].link));
+        loadURI(getURIFromSpotifyLink(props.trackList[temp].song_link));
     }
 
     function prevTrack() {
@@ -95,18 +186,18 @@ const SpotifyLinkPlayer = (props) => {
             temp = props.trackList.length-1;
 
         setCurIndex(temp);
-        loadURI(getURIFromSpotifyLink(props.trackList[temp].link));
+        loadURI(getURIFromSpotifyLink(props.trackList[temp].song_link));
     }
 
-    function addNewTrack(){
+    // function addNewTrack(){
 
-    }
+    // }
 
     const shuffleTracklist = () => {
         const newArr = props.trackList.sort( () => Math.random()-0.5 );
         props.setTrackList([...newArr]);
         setCurIndex(0);
-        loadURI(getURIFromSpotifyLink(props.trackList[curIndex].link));
+        loadURI(getURIFromSpotifyLink(props.trackList[curIndex].song_link));
     }
 
 
@@ -117,42 +208,6 @@ const SpotifyLinkPlayer = (props) => {
         closeToast();
 
         window.location.reload();
-
-        // const element = document.getElementById('embed-iframe');
-
-        // console.log(embedControllerRef);
-        // if (embedControllerRef.current) {
-        //     embedControllerRef.current.destroy();
-        //     console.log(embedControllerRef.current);
-        // }
-
-        // window.onSpotifyIframeApiReady = (IFrameAPI) => {
-
-        //     console.log(cookies);
-
-        //     const options = {
-        //         width: '100%',
-        //         height: '150',
-        //         uri: spotifyLink
-        //     };
-
-        //     const callback = (EmbedController) => {
-        //         embedControllerRef.current = EmbedController;
-                
-        //         // Add listeners for player events
-        //         EmbedController.addListener('playback_update', e => {
-        //             console.log('Playback update:', e);
-        //         });
-
-        //         EmbedController.addListener('ready', () => {
-        //             console.log('Embed ready');
-        //         });
-        //     };
-
-        //     IFrameAPI.createController(element, options, callback);
-            
-        //     console.log(embedRef.current.getAttribute('allow'));
-        // };
         
     }
 
@@ -212,7 +267,7 @@ const SpotifyLinkPlayer = (props) => {
                         hidePlaylist ? <div></div> :
                         <div className="bg-slate-900 rounded-b-lg overflow-scroll h-44">
                             {
-                                props.trackList.map((elem, ind) => 
+                                trackInfoList.map((elem, ind) => 
                                     <div key={elem.id} className="flex">
 
                                         <div className="mr-2 p-1">
@@ -223,7 +278,7 @@ const SpotifyLinkPlayer = (props) => {
                                         
                                         <button className="ml-auto mr-4" onClick={() => {
                                             if(curIndex != ind){
-                                                loadURI(getURIFromSpotifyLink(elem.link));
+                                                loadURI(getURIFromSpotifyLink(elem.song_link));
                                                 setCurIndex(ind);
                                             }
                                         }}>
