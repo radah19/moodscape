@@ -15,7 +15,7 @@ const RoomPage = (props) => {
     const [curMedia, setCurMedia] = useState({image:'', text:''});
     const [trackList, setTrackList] = useState([]); // Class Template: {link:''}
 
-    const [trackInfoList, setTrackInfoList] = useState([]);
+    // const [trackInfoList, setTrackInfoList] = useState([]);
 
     const [curTrack, setCurTrack] = useState(-1);
 
@@ -49,80 +49,10 @@ const RoomPage = (props) => {
             const trackListResponse = await fetch(`/api/song_links/${id}/`);
             const trackListResponseJSON = await trackListResponse.json();
             setTrackList(trackListResponseJSON.result);
+
         }
 
         fetchData();
-
-        const getAccessToken = async () => {
-            const credentials = Buffer.from(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`).toString('base64');
-        
-            const response = await fetch('https://accounts.spotify.com/api/token', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Basic ${credentials}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    grant_type: 'client_credentials'
-                })
-            });
-
-            const responseJSON = await response.json();
-            const data = await responseJSON.access_token;
-
-            console.log(data);
-
-            return data;
-        }
-
-        async function getTrackDetails(access_token, song_id, track_link) {
-            const temp = track_link.split('/');
-            const track_id = temp[temp.length - 1];
-
-            console.log(track_link);
-            console.log(track_id);
-
-            try {
-                const response = await fetch(`https://api.spotify.com/v1/tracks/${track_id}`, {
-                    method: 'GET',
-                    headers: { 'Authorization': 'Bearer ' + access_token },
-                });
-
-                if (response.status == 404) { // track not found
-
-                    console.log("Track not found!");
-
-                    setTrackInfoList([...trackInfoList, {
-                        id: song_id,
-                        name: "Oops", 
-                        link: track_link,
-                        img: "https://plus.unsplash.com/premium_photo-1677545183884-421157b2da02?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    }])
-                    
-                } else {
-                    const responseJSON = await response.json();
-
-                    console.log(responseJSON.album.images[0].url);
-    
-                    setTrackInfoList([...trackInfoList, {
-                        id: song_id,
-                        name: responseJSON.name, 
-                        link: track_link,
-                        img: responseJSON.album.images[0].url
-                    }]);
-                }
-            }
-
-            catch (e) {
-                console.log(e);
-            }
-        }
-
-        getAccessToken().then((token) => {
-            trackList.forEach((track) => {
-                getTrackDetails(token, track.id, track.song_link);
-            });
-        })
 
         setLoading(false);
     }, []);
@@ -162,7 +92,7 @@ const RoomPage = (props) => {
             <div>
                 {/* Spotify Player */}
                 <div id="spotify_player">
-                    <SpotifyLinkPlayer trackList={trackInfoList} setTrackList={setTrackInfoList} curTrack={curTrack} setCurTrack={setCurTrack} />
+                    <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} curTrack={curTrack} setCurTrack={setCurTrack} />
 
                 </div>
                 {/* Slideshow */}
