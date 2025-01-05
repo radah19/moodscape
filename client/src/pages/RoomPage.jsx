@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { useParams } from "react-router"
 import PuffLoader from "react-spinners/PuffLoader";
+import SpotifyLinkPlayer from "../components/SpotifyLinkPlayer";
+import { Buffer } from 'buffer';
 import CustomizeRoomModal from "../components/CustomizeRoomModal";
 import MediaModal from "../components/MediaModal";
 
@@ -11,8 +13,11 @@ const RoomPage = (props) => {
     const [roomInfo, setRoomInfo] = useState({id:'', user:'', title:'', color_gradient:'', font:''});
     const [mediaList, setMediaList] = useState([]);
     const [curMedia, setCurMedia] = useState({image:'', text:''});
-    const [trackList, setTrackList] = useState([]);
-    const [curTrack, setCurTrack] = useState({link:''});
+    const [trackList, setTrackList] = useState([]); // Class Template: {link:''}
+
+    // const [trackInfoList, setTrackInfoList] = useState([]);
+
+    const [curTrack, setCurTrack] = useState(-1);
 
     const [color1, setColor1] = useState("");
     const [color2, setColor2] = useState("");
@@ -44,10 +49,11 @@ const RoomPage = (props) => {
             const trackListResponse = await fetch(`/api/song_links/${id}/`);
             const trackListResponseJSON = await trackListResponse.json();
             setTrackList(trackListResponseJSON.result);
-            setCurTrack(trackListResponseJSON.result[0]);
+
         }
 
         fetchData();
+
         setLoading(false);
     }, []);
 
@@ -85,7 +91,10 @@ const RoomPage = (props) => {
             :
             <div>
                 {/* Spotify Player */}
-                <div id="spotify_player"> </div>
+                <div id="spotify_player">
+                    <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} curTrack={curTrack} setCurTrack={setCurTrack} />
+
+                </div>
                 {/* Slideshow */}
                 <div id="slideshow"></div>
                 {/* Button to change Colors, Title, Font */}

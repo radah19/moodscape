@@ -100,44 +100,46 @@ INSERT INTO vibe_rooms (created_by, title, color_gradient, font) VALUES
 -- Insert data into song_links table (2-3 songs per room)
 INSERT INTO song_links (vibe_room_id, song_link) VALUES 
     -- musiclover123's room songs
-    (1, 'https://open.spotify.com/track/2JvzF1RMd4rkAfcSvcKV0P'),
-    (1, 'https://open.spotify.com/track/5ChkMS8OtdzJeqyybCc9R5'),
-    (2, 'https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS'),
-    (2, 'https://open.spotify.com/track/1301WleyT98MSxVHPZCA6M'),
-    (3, 'https://open.spotify.com/track/3w3y8KPTfNeOKPiqUTakBh'),
-    (3, 'https://open.spotify.com/track/5BIMPccDwShpXq784RJlJp'),
+    (1, 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT'), -- 'Never Gonna Give You Up' by Rick Astley
+    (1, 'https://open.spotify.com/track/4u7EnebtmKWzUH433cf5Qv'), -- 'Bohemian Rhapsody' by Queen
+    (2, 'https://open.spotify.com/track/1YrC8s6yaMN8XqoCT0RiFy'), -- 'Shake It Off' by Taylor Swift
+    (2, 'https://open.spotify.com/track/7qiZfU4dY1lWllzX7mPBI3'), -- 'Shape of You' by Ed Sheeran
+    (3, 'https://open.spotify.com/track/4Dvkj6JhhA12EX05fT7y2e'), -- 'As It Was' by Harry Styles
+    (3, 'https://open.spotify.com/track/1mWdTewIgB3gtBM3TOSFhB'), -- 'Cruel Summer' by Taylor Swift
     
     -- rhythmranger's room songs
-    (4, 'https://open.spotify.com/track/3AJwUDP919kvQ9QcozQPxg'),
-    (4, 'https://open.spotify.com/track/0qPNDBW1i6SkEUTtRMuKm6'),
-    (5, 'https://open.spotify.com/track/4Li2WHPkuyCdtmokzW2007'),
-    (5, 'https://open.spotify.com/track/1301WleyT98MSxVHPZCA6M'),
+    (4, 'https://open.spotify.com/track/5ygDXis42ncn6kYG14lEVG'), -- 'Starboy' by The Weeknd
+    (4, 'https://open.spotify.com/track/0e3johd9GSzLTF8F2vszxz'), -- 'Blinding Lights' by The Weeknd
+    (5, 'https://open.spotify.com/track/3k3NWokhRRkEPhCzPmV8TW'), -- 'Flowers' by Miley Cyrus
+    (5, 'https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu'), -- 'Anti-Hero' by Taylor Swift
     
     -- melodymaven's room songs
-    (6, 'https://open.spotify.com/track/1yeB8MUNeLo9Ek1UEpsyz6'),
-    (6, 'https://open.spotify.com/track/2SumPdfTVBS3ppa0kM4Och'),
-    (7, 'https://open.spotify.com/track/2gZUPNdnz5Y45eiGxpHGSc'),
-    (7, 'https://open.spotify.com/track/3HNnxK7NgLXbDoxRZxNWiR'),
-    (8, 'https://open.spotify.com/track/0ofHAoxe9vBkTCp2UQIavz'),
-    (8, 'https://open.spotify.com/track/7MXVkk9YMctZqd1Srtv4MB'),
+    (6, 'https://open.spotify.com/track/2LBqCSwhJGcFQeTHMVGwy3'), -- 'Die For You' by The Weeknd
+    (6, 'https://open.spotify.com/track/2gQPv5jvVPqU2a9HhMNO1v'), -- 'Unholy' by Sam Smith, Kim Petras
+    (7, 'https://open.spotify.com/track/0rzaRSujxA0bKyjJl6vHYq'), -- 'STAY' by The Kid LAROI, Justin Bieber
+    (7, 'https://open.spotify.com/track/7qEHsqek33rTcFNT9PFqLf'), -- 'Someone You Loved' by Lewis Capaldi
+    (8, 'https://open.spotify.com/track/4ZtFanR9U6ndgddUvNcjcG'), -- 'good 4 u' by Olivia Rodrigo
+    (8, 'https://open.spotify.com/track/4fouWK6XVHhzl78KzQ1UjL'), -- 'abcdefu' by GAYLE
     
     -- tuneTrekker's room songs
-    (9, 'https://open.spotify.com/track/6RUKPb4LETWmmr3iAEQktW'),
-    (9, 'https://open.spotify.com/track/2HO4CPn6POzujnq7WzPKZh'),
-    (10, 'https://open.spotify.com/track/4Oun2ylbjFKMPTiaSbbCih'),
-    (10, 'https://open.spotify.com/track/5RADr7HnZVBB5ykP6VwVZ4'),
+    (9, 'https://open.spotify.com/track/3P3UA61WRQqwCXaoFOTENd'), -- 'Sunroof' by Nicky Youre, dazy
+    (9, 'https://open.spotify.com/track/0QHEIqNKsMoOY5urbzN48u'), -- 'Made You Look' by Meghan Trainor
+    (10, 'https://open.spotify.com/track/1bDbXMyjaUIooNwFE9wn0N'), -- 'About Damn Time' by Lizzo
+    (10, 'https://open.spotify.com/track/0O6u0VJ46W86TxN9wgyqDj'), -- 'Snap' by Rosa Linn
     
     -- Xinxinxin's room songs
-    (11, 'https://open.spotify.com/track/1301WleyT98MSxVHPZCA6M'),
-    (11, 'https://open.spotify.com/track/5BIMPccDwShpXq784RJlJp'),
-    (12, 'https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS'),
-    (12, 'https://open.spotify.com/track/3w3y8KPTfNeOKPiqUTakBh'),
+    (11, 'https://open.spotify.com/track/7JX2ClsnxN9GirkOezr01O'), -- '怪你過分美麗' by G.E.M.
+    (11, 'https://open.spotify.com/track/1bkvGbgK4HU8B7Ue4k7O7I'), -- '光年之外' by G.E.M.
+    (12, 'https://open.spotify.com/track/7v0pUAM7H5nkDwOMOGSZ0f'), -- '起風了' by 買辨
+    (12, 'https://open.spotify.com/track/4QZMBVrBLAvBryj8ZJIIY2'), -- '小城夏天' by LBI利比
     
     -- Xin's room songs
-    (13, 'https://open.spotify.com/track/2gZUPNdnz5Y45eiGxpHGSc'),
-    (13, 'https://open.spotify.com/track/3HNnxK7NgLXbDoxRZxNWiR'),
-    (14, 'https://open.spotify.com/track/0ofHAoxe9vBkTCp2UQIavz'),
-    (14, 'https://open.spotify.com/track/7MXVkk9YMctZqd1Srtv4MB');
+    (13, 'https://open.spotify.com/track/0n7Ij8XEDfYYFRgBQjNjnf'), -- '愛你' by 陳芳語
+    (13, 'https://open.spotify.com/track/0evtoaoSV609HxgVT0S3hZ'), -- Motherland Song!
+    (14, 'https://open.spotify.com/track/7JX2ClsnxN9GirkOezr01O'), -- '怪你過分美麗' by G.E.M.
+    (14, 'https://open.spotify.com/track/1bkvGbgK4HU8B7Ue4k7O7I'), -- '光年之外' by G.E.M.
+    (14, 'https://open.spotify.com/track/7v0pUAM7H5nkDwOMOGSZ0f'), -- '起風了' by 買辨
+    (14, 'https://open.spotify.com/track/4QZMBVrBLAvBryj8ZJIIY2'); -- '小城夏天' by LBI利比
 
 -- Insert data into media table (2 media items per room)
 INSERT INTO media (vibe_room_id, img_link, txt) VALUES 
