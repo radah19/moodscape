@@ -7,6 +7,10 @@ const SpotifyLinkPlayer = (props) => {
     const [curIndex, setCurIndex] = useState(0);
     const [hidePlaylist, setHidePlaylist] = useState(true);
 
+    const [addingElem, setAddingElem] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [spotLinkInputBox, setSpotLinkInputBox] = useState("");
+
     const [cookies, setCookies] = useState( (Cookies.get('spotify_cookies') != undefined) ? JSON.parse(Cookies.get('spotify_cookies')) : false );
     const [toastOpen, setToastOpen] = useState( (Cookies.get('toastOpen') != undefined) ? JSON.parse(Cookies.get('toastOpen')) : true );
 
@@ -235,6 +239,34 @@ const SpotifyLinkPlayer = (props) => {
                                     </div>
                                 )
                             }
+                            
+                            <div className="h-14 flex justify-center items-center">
+                            {
+                                addingElem ?
+                                // Input Box to Add Element
+                                    loading ? 
+                                    // Loading Bar
+                                    <div></div> 
+                                    :
+                                    // Input Box for Spotify Link
+                                    <div className="w-full flex flex-col justify-center items-center text-xs mx-2">
+                                        <input className="shadow px-2 appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                                                id="spotify_link_input" type="text" placeholder="Enter a Spotify Link"></input>
+                                        <div className="w-full flex mt-1 mx-2">
+                                            <button className="w-full ml-16 rounded-lg bg-green-500 text-white hover:bg-green-600 flex justify-center items-center" onClick={() => {setLoading(true);}}>Submit</button>
+                                            <button className="w-full mr-16 ml-1 rounded-lg bg-red-500 text-white hover:bg-red-600 flex justify-center items-center" onClick={() => {setAddingElem(false);}}>Cancel</button>
+                                        </div>
+                                    </div>
+                                :
+                                // Add Button
+                                <button onClick={() => {setAddingElem(true)}}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="rgb(100 116 139)" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </button>
+                            }
+                            </div>
+
                         </div>
                     }
                 </div>
