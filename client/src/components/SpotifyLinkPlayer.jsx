@@ -48,9 +48,9 @@ const SpotifyLinkPlayer = (props) => {
                     }
                 });
 
-                EmbedController.addListener('ready', () => {
-                    // console.log('Embed ready');
-                });
+                // EmbedController.addListener('ready', () => {
+                //     // console.log('Embed ready');
+                // });
             };
 
             IFrameAPI.createController(element, options, callback);
