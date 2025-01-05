@@ -7,8 +7,10 @@ const SpotifyLinkPlayer = (props) => {
     const [curIndex, setCurIndex] = useState(0);
     const [hidePlaylist, setHidePlaylist] = useState(true);
 
-    const [cookies, setCookies] = useState(JSON.parse(Cookies.get('spotify_cookies', false)));
-    const [toastOpen, setToastOpen] = useState(JSON.parse(Cookies.get('toastOpen', true)));
+    // const [cookies, setCookies] = useState(JSON.parse(Cookies.get('spotify_cookies', false)));
+    const [cookies, setCookies] = useState(true);
+    // const [toastOpen, setToastOpen] = useState(JSON.parse(Cookies.get('toastOpen', true)));
+    const [toastOpen, setToastOpen] = useState(true);
 
     const embedRef = useRef(null);
     const embedControllerRef = useRef(null);
@@ -44,9 +46,9 @@ const SpotifyLinkPlayer = (props) => {
                     }
                 });
 
-                EmbedController.addListener('ready', () => {
-                    // console.log('Embed ready');
-                });
+                // EmbedController.addListener('ready', () => {
+                //     // console.log('Embed ready');
+                // });
             };
 
             IFrameAPI.createController(element, options, callback);

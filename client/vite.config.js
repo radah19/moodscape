@@ -11,7 +11,9 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     define: {
       'import.meta.env.VITE_BACKEND_URL': JSON.stringify(env.BACKEND_URL), //Defines the VITE_BACKEND_URL environment variable from the .env outside the root directory
-      'import.meta.env.VITE_FRONTEND_URL': JSON.stringify(env.FRONTEND_URL)
+      'import.meta.env.VITE_FRONTEND_URL': JSON.stringify(env.FRONTEND_URL),
+      'import.meta.env.VITE_SPOTIFY_CLIENT_ID': JSON.stringify(env.SPOTIFY_CLIENT_ID),
+      'import.meta.env.VITE_SPOTIFY_CLIENT_SECRET': JSON.stringify(env.SPOTIFY_CLIENT_SECRET),
     },
     server: {
       proxy: {
