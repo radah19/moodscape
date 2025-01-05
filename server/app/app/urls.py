@@ -27,5 +27,6 @@ urlpatterns = [
     path('song_links/<int:room_id>/', views.song, name='song'),
     path('media/<int:room_id>/', views.media),
     path('edit_media/<int:media_id>/', views.edit_media),
-    path("auth/", views.auth)
+    path("auth/", views.auth),
+    path("create_account/", views.create_account)
 ]

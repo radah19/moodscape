@@ -75,6 +75,7 @@ export default function CreateCardModal(props) {
     }
 
     const submitRoom = async (event) => {
+    const submitRoom = async (event) => {
         console.log(props);
         try {
             event.preventDefault();
@@ -85,19 +86,31 @@ export default function CreateCardModal(props) {
                     "Content-type": "application/json",
                     'X-CSRFToken': csrfToken},
                 body: JSON.stringify({
-                    username: `${props.username}`,
+                    username: props.username,
                     title: title,
                     font: selectedFont,
                     color_gradient: `linear-gradient(45deg, ${color1}, ${color2})`
                 })
             })
-            console.log(response);
+
+            console.log('RESPONSE: ', response);
+
             if (response.status == 201) {
-                window.location.reload();
+                const json = await response.json();
+                console.log(json);
+                props.setUserVibeRooms([...props.userVibeRooms, {
+                    username: props.username,
+                    title: title,
+                    font: selectedFont,
+                    color_gradient: `linear-gradient(45deg, ${color1}, ${color2})`,
+                    id: json.id
+                }]);
+                // props.setModalOpen(false);
             }
+
         }
-        catch {
-            console.log("Could not create room");
+        catch(e) {
+            console.error('Error in room creation: ', e);
         }
     }
 
@@ -229,5 +242,8 @@ export default function CreateCardModal(props) {
 CreateCardModal.propTypes = {
     open: PropTypes.bool,
     setModalCallback: PropTypes.func,
+    setModalOpen: PropTypes.func,
     username: PropTypes.string,
+    userVibeRooms: PropTypes.array,
+    setUserVibeRooms: PropTypes.func
 };
