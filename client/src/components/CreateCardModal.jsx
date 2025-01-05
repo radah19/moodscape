@@ -75,10 +75,10 @@ export default function CreateCardModal(props) {
     }
 
     const submitRoom = async (event) => {
+    const submitRoom = async (event) => {
         console.log(props);
         try {
             event.preventDefault();
-            
             const csrfToken = Cookies.get('csrftoken');
             const response = await fetch("/api/vibe_rooms/", {
                 method: "POST",
