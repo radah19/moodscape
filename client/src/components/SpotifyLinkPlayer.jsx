@@ -259,8 +259,6 @@ const SpotifyLinkPlayer = (props) => {
         initializeEmbed();
     };
 
-    console.log(trackInfoList);
-
     return (
 
         <div>
