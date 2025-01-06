@@ -99,11 +99,11 @@ const SpotifyLinkPlayer = (props) => {
                         method: 'GET',
                         headers: { 'Authorization': 'Bearer ' + access_token },
                     });
-    
+
                     if (response.status == 404) { // track not found
-    
+
                         console.log("Track not found!");
-    
+
                         // temp_arr.push({
                         //     id: track.id,
                         //     name: "Oops", 
@@ -189,9 +189,15 @@ const SpotifyLinkPlayer = (props) => {
         loadURI(getURIFromSpotifyLink(trackInfoList[temp].song_link));
     }
 
-    // function addNewTrack(){
+    async function addNewTrack(link){
+        // Fetch Details about the Link
 
-    // }
+        // Update Front End if Link is valid!
+        
+        // Post Request to add it in DB
+
+        setLoading(false);
+    }
 
     const shuffleTracklist = () => {
         const newArr = trackInfoList.sort( () => Math.random()-0.5 );
@@ -297,14 +303,18 @@ const SpotifyLinkPlayer = (props) => {
                                 // Input Box to Add Element
                                     loading ? 
                                     // Loading Bar
-                                    <div></div> 
-                                    :
+                                    <div>
+                                        <svg className="animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    </div> :
                                     // Input Box for Spotify Link
                                     <div className="w-full flex flex-col justify-center items-center text-xs mx-2">
                                         <input className="shadow px-2 appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                                id="spotify_link_input" type="text" placeholder="Enter a Spotify Link"></input>
+                                                id="spotify_link_input" type="text" placeholder="Enter a Spotify Link" onChange={(e)=>setSpotLinkInputBox(e.target.value)}></input>
                                         <div className="w-full flex mt-1 mx-2">
-                                            <button className="w-full ml-16 rounded-lg bg-green-500 text-white hover:bg-green-600 flex justify-center items-center" onClick={() => {setLoading(true);}}>Submit</button>
+                                            <button className="w-full ml-16 rounded-lg bg-green-500 text-white hover:bg-green-600 flex justify-center items-center" onClick={() => {setLoading(true); addNewTrack(spotLinkInputBox);}}>Submit</button>
                                             <button className="w-full mr-16 ml-1 rounded-lg bg-red-500 text-white hover:bg-red-600 flex justify-center items-center" onClick={() => {setAddingElem(false);}}>Cancel</button>
                                         </div>
                                     </div>
