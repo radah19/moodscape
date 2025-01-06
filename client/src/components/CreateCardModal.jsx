@@ -75,7 +75,6 @@ export default function CreateCardModal(props) {
     }
 
     const submitRoom = async (event) => {
-    const submitRoom = async (event) => {
         console.log(props);
         try {
             event.preventDefault();

@@ -21,15 +21,10 @@ const SpotifyLinkPlayer = (props) => {
     const embedControllerRef = useRef(null);
 
     useEffect(() => {
-
-        console.log(props);
-
-
         // Bounce if tracklist is empty
         if(!props.trackList[0]){
             return;
         }
-
 
         // Load the Spotify IFrame API script
         const script = document.createElement("script");
@@ -92,9 +87,9 @@ const SpotifyLinkPlayer = (props) => {
 
             const access_token = await getAccessToken();
 
-            const temp_arr = [];
+            const temp_arr = Array(arr.length);
 
-            arr.forEach(async (track) => {
+            arr.forEach(async (track, ind) => {
 
                 const temp = track.song_link.split('/');
                 const track_id = temp[temp.length - 1];
@@ -109,22 +104,22 @@ const SpotifyLinkPlayer = (props) => {
     
                         console.log("Track not found!");
     
-                        temp_arr.push({
-                            id: track.id,
-                            name: "Oops", 
-                            link: track.song_link,
-                            img: "https://plus.unsplash.com/premium_photo-1677545183884-421157b2da02?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        });
+                        // temp_arr.push({
+                        //     id: track.id,
+                        //     name: "Oops", 
+                        //     song_link: track.song_link,
+                        //     img: "https://plus.unsplash.com/premium_photo-1677545183884-421157b2da02?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        // });
                         
                     } else {
                         const responseJSON = await response.json();
         
-                        temp_arr.push({
+                        temp_arr[ind] = {
                             id: track.id,
                             name: responseJSON.name, 
-                            link: track.song_link,
+                            song_link: track.song_link,
                             img: responseJSON.album.images[0].url
-                        });
+                        };
                     }
                 }
 
@@ -132,7 +127,8 @@ const SpotifyLinkPlayer = (props) => {
                     console.log(e);
                 };
             });
-
+            
+            console.log(temp_arr);
             return temp_arr;
         }
 
@@ -177,20 +173,20 @@ const SpotifyLinkPlayer = (props) => {
 
     function nextTrack() {
         let temp = curIndex+1;
-        if(temp >= props.trackList.length)
+        if(temp >= trackInfoList.length)
             temp = 0;
 
         setCurIndex(temp);
-        loadURI(getURIFromSpotifyLink(props.trackList[temp].song_link));
+        loadURI(getURIFromSpotifyLink(trackInfoList[temp].song_link));
     }
 
     function prevTrack() {
         let temp = curIndex-1;
         if(temp < 0)
-            temp = props.trackList.length-1;
+            temp = trackInfoList.length-1;
 
         setCurIndex(temp);
-        loadURI(getURIFromSpotifyLink(props.trackList[temp].song_link));
+        loadURI(getURIFromSpotifyLink(trackInfoList[temp].song_link));
     }
 
     // function addNewTrack(){
@@ -198,10 +194,10 @@ const SpotifyLinkPlayer = (props) => {
     // }
 
     const shuffleTracklist = () => {
-        const newArr = props.trackList.sort( () => Math.random()-0.5 );
-        props.setTrackList([...newArr]);
+        const newArr = trackInfoList.sort( () => Math.random()-0.5 );
+        setTrackInfoList([...newArr]);
         setCurIndex(0);
-        loadURI(getURIFromSpotifyLink(props.trackList[curIndex].song_link));
+        loadURI(getURIFromSpotifyLink(trackInfoList[curIndex].song_link));
     }
 
 
