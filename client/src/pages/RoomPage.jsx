@@ -92,7 +92,7 @@ const RoomPage = (props) => {
             <div>
                 {/* Spotify Player */}
                 <div id="spotify_player">
-                    <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} curTrack={curTrack} setCurTrack={setCurTrack} />
+                    <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} room_id={id}/>
 
                 </div>
                 {/* Slideshow */}

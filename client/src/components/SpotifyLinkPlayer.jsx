@@ -77,7 +77,7 @@ const SpotifyLinkPlayer = (props) => {
                         headers: { 'Authorization': 'Bearer ' + access_token },
                     });
 
-                    if (response.status == 404) { // track not found
+                    if (response.status == 400) { // track not found
 
                         console.log("Track not found!");
 
@@ -129,7 +129,8 @@ const SpotifyLinkPlayer = (props) => {
     
     // Get spotify access token
     const getAccessToken = async () => {
-        const credentials = Buffer.from(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`).toString('base64');
+        const credentials = Buffer.from(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.
+        env.VITE_SPOTIFY_CLIENT_SECRET}`).toString('base64');
     
         const response = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
@@ -200,16 +201,27 @@ const SpotifyLinkPlayer = (props) => {
             headers: { 'Authorization': 'Bearer ' + access_token },
         });
 
-        if (response.status == 404) { // track not found
+        if (response.status == 400) { // track not found
             // Toast to say "Spotify track was not found! Please enter a valid link 😁"
         } else {
             const responseJSON = await response.json();
             // Post Request to add it in DB
-            const id = 0;
+            const csrfToken = Cookies.get('csrftoken');
+            const postResponse = await fetch(`/api/song_links/${props.room_id}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    link:link
+                })     
+            });
+            const json = await postResponse.json();
 
             // Update Front End if Link is valid!
             setTrackInfoList([...trackInfoList, {
-                id: id,
+                id: json.result[0].id,
                 name: responseJSON.name, 
                 song_link: link,
                 img: responseJSON.album.images[0].url
@@ -217,6 +229,7 @@ const SpotifyLinkPlayer = (props) => {
         }
 
         setLoading(false);
+        setAddingElem(false);
     }
 
     const shuffleTracklist = () => {
@@ -245,6 +258,8 @@ const SpotifyLinkPlayer = (props) => {
         setCookies(true);
         initializeEmbed();
     };
+
+    console.log(trackInfoList);
 
     return (
 
@@ -393,8 +408,7 @@ SpotifyLinkPlayer.propTypes = {
     cookies: PropTypes.bool,
     trackList: PropTypes.array,
     setTrackList: PropTypes.func,
-    curTrack: PropTypes.number,
-    setCurTrack: PropTypes.func,
+    room_id: PropTypes.number,
 }
 
 export default SpotifyLinkPlayer;
