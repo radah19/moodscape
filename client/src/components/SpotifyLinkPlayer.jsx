@@ -59,29 +59,6 @@ const SpotifyLinkPlayer = (props) => {
             IFrameAPI.createController(element, options, callback);
         };
 
-
-
-        // Get spotify access token
-        const getAccessToken = async () => {
-            const credentials = Buffer.from(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`).toString('base64');
-        
-            const response = await fetch('https://accounts.spotify.com/api/token', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Basic ${credentials}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    grant_type: 'client_credentials'
-                })
-            });
-
-            const responseJSON = await response.json();
-            const data = await responseJSON.access_token;
-
-            return data;
-        }
-
         // Get track details & put them into an array
         async function getTrackDetails(arr) {
 
@@ -149,6 +126,28 @@ const SpotifyLinkPlayer = (props) => {
         };
     }, [props]);
 
+    
+    // Get spotify access token
+    const getAccessToken = async () => {
+        const credentials = Buffer.from(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`).toString('base64');
+    
+        const response = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${credentials}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                grant_type: 'client_credentials'
+            })
+        });
+
+        const responseJSON = await response.json();
+        const data = await responseJSON.access_token;
+
+        return data;
+    }
+
 
     function getURIFromSpotifyLink(link){
         // I'll have to assume I've been given a spotify link..
@@ -190,11 +189,32 @@ const SpotifyLinkPlayer = (props) => {
     }
 
     async function addNewTrack(link){
-        // Fetch Details about the Link
-
-        // Update Front End if Link is valid!
+        const access_token = await getAccessToken();
         
-        // Post Request to add it in DB
+        const temp = link.split('/');
+        const track_id = temp[temp.length - 1];
+
+        // Fetch Details about the Link
+        const response = await fetch(`https://api.spotify.com/v1/tracks/${track_id}`, {
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + access_token },
+        });
+
+        if (response.status == 404) { // track not found
+            // Toast to say "Spotify track was not found! Please enter a valid link 😁"
+        } else {
+            const responseJSON = await response.json();
+            // Post Request to add it in DB
+            const id = 0;
+
+            // Update Front End if Link is valid!
+            setTrackInfoList([...trackInfoList, {
+                id: id,
+                name: responseJSON.name, 
+                song_link: link,
+                img: responseJSON.album.images[0].url
+            }]);            
+        }
 
         setLoading(false);
     }
