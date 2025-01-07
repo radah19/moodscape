@@ -134,7 +134,17 @@ def song(request, room_id):
         return HttpResponse(json.dumps(response_data), content_type='application/json', status=201)
 
     elif request.method == "DELETE":
-        print('lalala')
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                DELETE from song_links 
+                WHERE id = %s
+                returning id
+            """, [room_id])
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+        return HttpResponse(json.dumps(response_data), content_type='application/json', status=200)
+
     else:
         with connection.cursor() as cursor:
             cursor.execute(
