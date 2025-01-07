@@ -18,8 +18,6 @@ const RoomPage = (props) => {
     const [color1, setColor1] = useState("");
     const [color2, setColor2] = useState("");
 
-    const [notifications, setNotifications] = useState([]);
-
     const [customizeRoomModalOpen, setCustomizeRoomModalOpen] = useState(false);
     const [mediaModalOpen, setMediaModalOpen] = useState(false);
 
