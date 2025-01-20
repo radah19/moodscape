@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import PuffLoader from "react-spinners/PuffLoader";
 import SpotifyLinkPlayer from "../components/SpotifyLinkPlayer";
 import { Buffer } from 'buffer';
@@ -9,6 +9,7 @@ import MediaModal from "../components/MediaModal";
 
 const RoomPage = (props) => {
     const {id} = useParams();
+    const navigate = useNavigate();
 
     const [roomInfo, setRoomInfo] = useState({id:'', user:'', title:'', color_gradient:'', font:''});
     const [mediaList, setMediaList] = useState([]);
@@ -93,6 +94,13 @@ const RoomPage = (props) => {
                 </div>
                 {/* Slideshow */}
                 <div id="slideshow"></div>
+
+                {/* Button to go back */}
+                <button onClick={() => {navigate('/')}} id="customize_room">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                    </svg>
+                </button>
 
                 {/* Button to change Colors, Title, Font */}
                 <button onClick={openCustomizeRoomModal} id="customize_room">
