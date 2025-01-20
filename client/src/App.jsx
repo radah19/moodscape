@@ -44,7 +44,7 @@ function App() {
   ]);
 
   return (
-    <div>
+    <div className="w-full justify-center flex flex-row">
       { verifyingCachedUser ? 
         <VerifyCachedUserPage setVerifyingCachedUser={setVerifyingCachedUser} setUser={setUser}/> 
         : element

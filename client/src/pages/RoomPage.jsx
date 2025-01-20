@@ -8,8 +8,6 @@ import CustomizeRoomModal from "../components/CustomizeRoomModal";
 import MediaModal from "../components/MediaModal";
 import SlideShow from '../components/SlideShow';
 
-import "./RoomPage.css";
-
 const RoomPage = (props) => {
     const {id} = useParams();
     const navigate = useNavigate();
@@ -56,6 +54,12 @@ const RoomPage = (props) => {
         document.body.style.background = `linear-gradient(45deg, ${color1}, ${color2})`;
 
         setLoading(false);
+
+        return () => {
+            document.body.style.backgroundColor = '#FFF0F5';
+            document.body.style.background = 'solid';
+        };
+
     }, [color1, color2]);
 
     const setCustomizeRoomModalCallback = (state) => {
@@ -79,7 +83,7 @@ const RoomPage = (props) => {
     }
 
     return (
-        <div>
+        <div className="w-full">
             {
                 loading ?
                     <PuffLoader
@@ -103,18 +107,21 @@ const RoomPage = (props) => {
 
                     <div id="spotify_player">
                         {/* Spotify Player */}
-                        <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} curTrack={curTrack} setCurTrack={setCurTrack} />
+                        <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} room_id={id} />
                     </div>
-
-                    {/* Button to go back */}
-                    <button onClick={() => {navigate('/')}} id="customize_room">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                        </svg>
-                    </button>
 
                     <div className="relative col-start-2 h-32 pt-20">
                         <div className="flex flex-row justify-center items-center space-x-4">
+                            {/* Button to go back */}
+                            <button onClick={() => {
+                                window.location = "/";
+
+                            }} id="customize_room">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                                </svg>
+                            </button>
+
                             <div id="customize_room">
                                 {/* Button to change Colors, Title, Font */}
                                 <button onClick={openCustomizeRoomModal}>
