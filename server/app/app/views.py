@@ -118,18 +118,46 @@ def vibe_room_update_room_id(request, room_id):
     return HttpResponse("Room updated", status=201)
 
 def song(request, room_id):
-    with connection.cursor() as cursor:
-        cursor.execute(
-            """
-            SELECT *
-            FROM song_links
-            WHERE vibe_room_id = %s
-        """, [room_id])
+    if request.method == "POST":
+        data = json.loads(request.body)
+        link = data['link']
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO song_links (vibe_room_id, song_link)
+                VALUES (%s, %s)
+                returning id
+            """, [room_id, link])
 
-        response_data = {}
-        response_data['result'] = dictfetchall(cursor)
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+        return HttpResponse(json.dumps(response_data), content_type='application/json', status=201)
 
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+    elif request.method == "DELETE":
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                DELETE from song_links 
+                WHERE id = %s
+                returning id
+            """, [room_id])
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+        return HttpResponse(json.dumps(response_data), content_type='application/json', status=200)
+
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT *
+                FROM song_links
+                WHERE vibe_room_id = %s
+            """, [room_id])
+
+            response_data = {}
+            response_data['result'] = dictfetchall(cursor)
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def media(request, room_id):
     if request.method == "POST":

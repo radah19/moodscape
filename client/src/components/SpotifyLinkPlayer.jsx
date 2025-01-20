@@ -21,15 +21,10 @@ const SpotifyLinkPlayer = (props) => {
     const embedControllerRef = useRef(null);
 
     useEffect(() => {
-
-        // console.log(props);
-
-
         // Bounce if tracklist is empty
         if(!props.trackList[0]){
             return;
         }
-
 
         // Load the Spotify IFrame API script
         const script = document.createElement("script");
@@ -64,37 +59,14 @@ const SpotifyLinkPlayer = (props) => {
             IFrameAPI.createController(element, options, callback);
         };
 
-
-
-        // Get spotify access token
-        const getAccessToken = async () => {
-            const credentials = Buffer.from(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`).toString('base64');
-        
-            const response = await fetch('https://accounts.spotify.com/api/token', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Basic ${credentials}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    grant_type: 'client_credentials'
-                })
-            });
-
-            const responseJSON = await response.json();
-            const data = await responseJSON.access_token;
-
-            return data;
-        }
-
         // Get track details & put them into an array
         async function getTrackDetails(arr) {
 
             const access_token = await getAccessToken();
 
-            const temp_arr = [];
+            const temp_arr = Array(arr.length);
 
-            arr.forEach(async (track) => {
+            arr.forEach(async (track, ind) => {
 
                 const temp = track.song_link.split('/');
                 const track_id = temp[temp.length - 1];
@@ -104,27 +76,27 @@ const SpotifyLinkPlayer = (props) => {
                         method: 'GET',
                         headers: { 'Authorization': 'Bearer ' + access_token },
                     });
-    
-                    if (response.status == 404) { // track not found
-    
+
+                    if (response.status == 400) { // track not found
+
                         console.log("Track not found!");
-    
-                        temp_arr.push({
-                            id: track.id,
-                            name: "Oops", 
-                            link: track.song_link,
-                            img: "https://plus.unsplash.com/premium_photo-1677545183884-421157b2da02?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        });
+
+                        // temp_arr.push({
+                        //     id: track.id,
+                        //     name: "Oops", 
+                        //     song_link: track.song_link,
+                        //     img: "https://plus.unsplash.com/premium_photo-1677545183884-421157b2da02?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        // });
                         
                     } else {
                         const responseJSON = await response.json();
         
-                        temp_arr.push({
+                        temp_arr[ind] = {
                             id: track.id,
                             name: responseJSON.name, 
-                            link: track.song_link,
+                            song_link: track.song_link,
                             img: responseJSON.album.images[0].url
-                        });
+                        };
                     }
                 }
 
@@ -132,7 +104,8 @@ const SpotifyLinkPlayer = (props) => {
                     console.log(e);
                 };
             });
-
+            
+            console.log(temp_arr);
             return temp_arr;
         }
 
@@ -152,6 +125,29 @@ const SpotifyLinkPlayer = (props) => {
             document.body.removeChild(script);
         };
     }, [props]);
+
+    
+    // Get spotify access token
+    const getAccessToken = async () => {
+        const credentials = Buffer.from(`${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${import.meta.
+        env.VITE_SPOTIFY_CLIENT_SECRET}`).toString('base64');
+    
+        const response = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${credentials}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                grant_type: 'client_credentials'
+            })
+        });
+
+        const responseJSON = await response.json();
+        const data = await responseJSON.access_token;
+
+        return data;
+    }
 
 
     function getURIFromSpotifyLink(link){
@@ -177,31 +173,91 @@ const SpotifyLinkPlayer = (props) => {
 
     function nextTrack() {
         let temp = curIndex+1;
-        if(temp >= props.trackList.length)
+        if(temp >= trackInfoList.length)
             temp = 0;
 
         setCurIndex(temp);
-        loadURI(getURIFromSpotifyLink(props.trackList[temp].song_link));
+        loadURI(getURIFromSpotifyLink(trackInfoList[temp].song_link));
     }
 
     function prevTrack() {
         let temp = curIndex-1;
         if(temp < 0)
-            temp = props.trackList.length-1;
+            temp = trackInfoList.length-1;
 
         setCurIndex(temp);
-        loadURI(getURIFromSpotifyLink(props.trackList[temp].song_link));
+        loadURI(getURIFromSpotifyLink(trackInfoList[temp].song_link));
     }
 
-    // function addNewTrack(){
+    async function addNewTrack(link){
+        const access_token = await getAccessToken();
+        
+        const temp = link.split('/');
+        const track_id = temp[temp.length - 1];
 
-    // }
+        // Fetch Details about the Link
+        const response = await fetch(`https://api.spotify.com/v1/tracks/${track_id}`, {
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + access_token },
+        });
+
+        if (response.status == 400) { // track not found
+            // Toast to say "Spotify track was not found! Please enter a valid link 😁"
+        } else {
+            const responseJSON = await response.json();
+            // Post Request to add it in DB
+            const csrfToken = Cookies.get('csrftoken');
+            const postResponse = await fetch(`/api/song_links/${props.room_id}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    link:link
+                })     
+            });
+            const json = await postResponse.json();
+
+            // Update Front End if Link is valid!
+            setTrackInfoList([...trackInfoList, {
+                id: json.result[0].id,
+                name: responseJSON.name, 
+                song_link: link,
+                img: responseJSON.album.images[0].url
+            }]);            
+        }
+
+        setLoading(false);
+        setAddingElem(false);
+    }
+
+    async function deleteTrack(id){
+        const csrfToken = Cookies.get('csrftoken');
+        const response = await fetch(`/api/song_links/${id}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            }
+        });
+
+        if (response.status == 200){
+            // Toast to show deletion succeeded and everything is happy
+
+            // Delete from list on front end
+            const temp = [...trackInfoList].filter((v) => v.id != id);
+            setTrackInfoList(temp);
+        } else {
+            // Toast to show deletion failed, please add later!!
+        }
+    }
 
     const shuffleTracklist = () => {
-        const newArr = props.trackList.sort( () => Math.random()-0.5 );
-        props.setTrackList([...newArr]);
+        const newArr = trackInfoList.sort( () => Math.random()-0.5 );
+        setTrackInfoList([...newArr]);
         setCurIndex(0);
-        loadURI(getURIFromSpotifyLink(props.trackList[curIndex].song_link));
+        loadURI(getURIFromSpotifyLink(trackInfoList[curIndex].song_link));
     }
 
 
@@ -280,6 +336,7 @@ const SpotifyLinkPlayer = (props) => {
 
                                         <p className="text-white content-center">{elem.name}</p>
                                         
+                                        {/* Play Button */}
                                         <button className="ml-auto mr-4" onClick={() => {
                                             if(curIndex != ind){
                                                 loadURI(getURIFromSpotifyLink(elem.song_link));
@@ -291,6 +348,12 @@ const SpotifyLinkPlayer = (props) => {
                                             </svg>
                                         </button>
 
+                                        {/* Trash Button */}
+                                        <button className="mr-4" onClick={() => {deleteTrack(elem.id)}}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="size-6">
+                                                <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
                                     </div>
                                 )
                             }
@@ -301,14 +364,18 @@ const SpotifyLinkPlayer = (props) => {
                                 // Input Box to Add Element
                                     loading ? 
                                     // Loading Bar
-                                    <div></div> 
-                                    :
+                                    <div>
+                                        <svg className="animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    </div> :
                                     // Input Box for Spotify Link
                                     <div className="w-full flex flex-col justify-center items-center text-xs mx-2">
                                         <input className="shadow px-2 appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                                id="spotify_link_input" type="text" placeholder="Enter a Spotify Link"></input>
+                                                id="spotify_link_input" type="text" placeholder="Enter a Spotify Link" onChange={(e)=>setSpotLinkInputBox(e.target.value)}></input>
                                         <div className="w-full flex mt-1 mx-2">
-                                            <button className="w-full ml-16 rounded-lg bg-green-500 text-white hover:bg-green-600 flex justify-center items-center" onClick={() => {setLoading(true);}}>Submit</button>
+                                            <button className="w-full ml-16 rounded-lg bg-green-500 text-white hover:bg-green-600 flex justify-center items-center" onClick={() => {setLoading(true); addNewTrack(spotLinkInputBox);}}>Submit</button>
                                             <button className="w-full mr-16 ml-1 rounded-lg bg-red-500 text-white hover:bg-red-600 flex justify-center items-center" onClick={() => {setAddingElem(false);}}>Cancel</button>
                                         </div>
                                     </div>
@@ -367,8 +434,7 @@ SpotifyLinkPlayer.propTypes = {
     cookies: PropTypes.bool,
     trackList: PropTypes.array,
     setTrackList: PropTypes.func,
-    curTrack: PropTypes.number,
-    setCurTrack: PropTypes.func,
+    room_id: PropTypes.number,
 }
 
 export default SpotifyLinkPlayer;
