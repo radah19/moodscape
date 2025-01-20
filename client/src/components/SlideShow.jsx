@@ -43,12 +43,12 @@ const SlideShow = (props) => {
                     </svg>
                 </button>
 
-                <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+                <div className="relative h-96 overflow-hidden rounded-lg">
                     {
                         mediaList.map((item, index) => (
                             <div key={index} id={`carousel-item-${index}`} className={`${slideNo === index ? "visible" : "invisible"} rounded-lg`}>
                                 <img src={item.img_link} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded-lg" alt="..." />
-                                <div className="absolute bg-slate-100 bg-opacity-70 w-3/4 rounded-lg text-center -translate-x-1/2 -translate-y-1/3 bottom-1/3 left-1/2" style={{fontFamily: props.font}}>
+                                <div className="absolute bg-slate-100 bg-opacity-70 w-3/4 rounded-lg text-center -translate-x-1/2 -translate-y-1/4 bottom-1/4 left-1/2" style={{fontFamily: props.font}}>
                                     {
                                         item.txt !== ""
                                     ?
