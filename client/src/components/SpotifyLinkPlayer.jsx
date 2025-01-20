@@ -396,7 +396,7 @@ const SpotifyLinkPlayer = (props) => {
             </div>
 
             {/* Toast */}
-            <div style={{visibility:`${toastOpen ? "visible" : "hidden"}`}}>
+            {/* <div style={{visibility:`${toastOpen ? "visible" : "hidden"}`}}>
             <div id="toast-interactive" className="w-3/4 max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400 my-3" role="alert">
                 <div className="flex">
                     <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:text-blue-300 dark:bg-blue-900">
@@ -423,7 +423,7 @@ const SpotifyLinkPlayer = (props) => {
                     </button>
                 </div>
             </div>
-            </div>
+            </div> */}
 
 
         </div>
