@@ -123,6 +123,8 @@ const SpotifyLinkPlayer = (props) => {
         // Cleanup
         return () => {
             document.body.removeChild(script);
+            if(embedControllerRef.current)
+                embedControllerRef.current.destroy();
         };
     }, [props]);
 
