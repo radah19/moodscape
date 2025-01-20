@@ -2,72 +2,74 @@ import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Carousel } from 'flowbite';
 
+
 const SlideShow = (props) => {
 
     const [mediaList, setMediaList] = useState([]);
 
     const carousel = useRef(null);
+    const [slideNo, setSlideNo] = useState(0);
+    const prev = useRef(null);
+    const next = useRef(null);
 
     useEffect(() => {
 
         setMediaList(props.mediaList);
 
-        const temp_items = [];
-        props.mediaList.forEach((item, index) => {
-            temp_items.append({
-                position: index,
-                el: document.getElementById(`carousel-item-${index}`)
-            })
-        });
+        prev.current.addEventListener('click', prevSlide);
+        next.current.addEventListener('click', nextSlide);
 
-        const temp_options = {
-            defaultPosition: 1,
-            interval: 300,
-        };
+        console.log(mediaList);
 
-        // const temp_instance_options = {};
+    }, [props, slideNo]);
 
-        const carouselElement = document.getElementById('carousel-example');
+    const prevSlide = () => {
+        setSlideNo(slideNo - 1 < 0 ? mediaList.length - 1 : slideNo - 1);
+    }
 
-        carousel.current = new Carousel(carouselElement, temp_items, temp_options);
-        
-
-    }, [props]);
+    const nextSlide = () => {
+        setSlideNo(slideNo + 1 > mediaList.length - 1 ? 0 : slideNo + 1);
+    }
 
     return (
 
         <div>
 
-            <div id="controls-carousel" className="relative w-full" data-carousel="static">
-                {/* <!-- Carousel wrapper --> */}
-                <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+            <div style={{display: "grid", gridTemplateColumns: "10% 80% 10%", gridGap: "5px"}}>
 
+                <button ref={prev} style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                </button>
+
+                <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
                     {
                         mediaList.map((item, index) => (
-                            <div key={index} id={`carousel-item-${index}`} className="hidden items-center duration-300 ease-in-out rounded-md object-cover">
-                                <img src={item.img_link} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." />
+                            <div key={index} id={`carousel-item-${index}`} className={`${slideNo === index ? "visible" : "invisible"} rounded-lg`}>
+                                <img src={item.img_link} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded-lg" alt="..." />
+                                <div className="absolute bg-slate-100 bg-opacity-70 w-3/4 rounded-lg text-center -translate-x-1/2 -translate-y-1/3 bottom-1/3 left-1/2" style={{fontFamily: props.font}}>
+                                    {
+                                        item.txt !== ""
+                                    ?
+                                        <div>
+                                            <p>{item.txt}</p>
+                                        </div>
+                                    :
+                                        <div></div>
+                                    }
+                                </div>
                             </div>
                         ))
                     }
-
                 </div>
-                {/* <!-- Slider controls --> */}
-                <button type="button" className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                        <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4"/>
-                        </svg>
-                        <span className="sr-only">Previous</span>
-                    </span>
+
+                <button ref={next} style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
                 </button>
-                <button type="button" className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                        <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
-                        </svg>
-                        <span className="sr-only">Next</span>
-                    </span>
-                </button>
+
             </div>
             
         </div>
@@ -77,5 +79,8 @@ const SlideShow = (props) => {
 export default SlideShow;
 
 SlideShow.propTypes = {
-    mediaList: PropTypes.array
+    mediaList: PropTypes.array,
+    font: PropTypes.string,
+    color1: PropTypes.string,
+    color2: PropTypes.string
 }

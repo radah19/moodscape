@@ -97,7 +97,11 @@ const RoomPage = (props) => {
                     
                     <div id="slideshow" className="col-start-2">
                         {/* Slideshow */}
-                        <SlideShow mediaList={mediaList}/>
+                        <SlideShow
+                            mediaList={mediaList}
+                            font={roomInfo.font}
+                            color1={color1}
+                            color2={color2}/>
                     </div>
 
                     <div id="spotify_player">
