@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { useNavigate, useParams } from "react-router"
 import PuffLoader from "react-spinners/PuffLoader";
 import SpotifyLinkPlayer from "../components/SpotifyLinkPlayer";
-import { Buffer } from 'buffer';
+// import { Buffer } from 'buffer';
 import CustomizeRoomModal from "../components/CustomizeRoomModal";
 import MediaModal from "../components/MediaModal";
+import SlideShow from '../components/SlideShow';
+
+import "./RoomPage.css";
 
 const RoomPage = (props) => {
     const {id} = useParams();
@@ -46,13 +49,14 @@ const RoomPage = (props) => {
             const trackListResponse = await fetch(`/api/song_links/${id}/`);
             const trackListResponseJSON = await trackListResponse.json();
             setTrackList(trackListResponseJSON.result);
-
         }
 
         fetchData();
 
+        document.body.style.background = `linear-gradient(45deg, ${color1}, ${color2})`;
+
         setLoading(false);
-    }, []);
+    }, [color1, color2]);
 
     const setCustomizeRoomModalCallback = (state) => {
         setCustomizeRoomModalOpen(state);
@@ -76,61 +80,77 @@ const RoomPage = (props) => {
 
     return (
         <div>
-        {
-            loading ?
-                <PuffLoader
-                    color={"#FF74BC"}
-                    loading={true}
-                    size={100}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                />
-            :
-            <div>
-                {/* Spotify Player */}
-                <div id="spotify_player">
-                    <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} room_id={id}/>
+            {
+                loading ?
+                    <PuffLoader
+                        color={"#FF74BC"}
+                        loading={true}
+                        size={100}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                    />
+                :
+                <div className="grid grid-cols-3" style={{display: "grid", gridTemplateColumns: "30% 40% 30%", gridGap: "5px", backgroundColor: roomInfo.color_gradient ? roomInfo.color_gradient : 'inherit' }}>
+                    
+                    <div id="slideshow" className="col-start-2 h-72 pt-10">
+                        {/* Slideshow */}
+                        <SlideShow
+                            mediaList={mediaList}
+                            font={roomInfo.font}
+                            color1={color1}
+                            color2={color2}/>
+                    </div>
 
+                    <div id="spotify_player">
+                        {/* Spotify Player */}
+                        <SpotifyLinkPlayer trackList={trackList} setTrackList={setTrackList} curTrack={curTrack} setCurTrack={setCurTrack} />
+                    </div>
+
+                    {/* Button to go back */}
+                    <button onClick={() => {navigate('/')}} id="customize_room">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                        </svg>
+                    </button>
+
+                    <div className="relative col-start-2 h-32 pt-20">
+                        <div className="flex flex-row justify-center items-center space-x-4">
+                            <div id="customize_room">
+                                {/* Button to change Colors, Title, Font */}
+                                <button onClick={openCustomizeRoomModal}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
+                                    </svg>
+                                </button>
+                                <CustomizeRoomModal
+                                    open={customizeRoomModalOpen}
+                                    setModalCallback={setCustomizeRoomModalCallback}
+                                    initial_title={roomInfo.title}
+                                    initial_font={roomInfo.font}
+                                    color1={color1}
+                                    color2={color2}
+                                    room_id={parseInt(id)}></CustomizeRoomModal>
+                            </div>
+
+                            <div id="add_media">
+                                {/* Button to add Media - be it image or quote or something else :3 */}
+                                <button onClick={openMediaModal}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                    </svg>
+                                </button>
+                                <MediaModal
+                                    open={mediaModalOpen}
+                                    setModalCallback={setMediaModalCallback}
+                                    mediaList={mediaList}
+                                    setMediaListCallback={setMediaListCallback}
+                                    room_id={parseInt(id)}></MediaModal>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                {/* Slideshow */}
-                <div id="slideshow"></div>
-
-                {/* Button to go back */}
-                <button onClick={() => {navigate('/')}} id="customize_room">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                    </svg>
-                </button>
-
-                {/* Button to change Colors, Title, Font */}
-                <button onClick={openCustomizeRoomModal} id="customize_room">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
-                    </svg>
-                </button>
-                <CustomizeRoomModal
-                    open={customizeRoomModalOpen}
-                    setModalCallback={setCustomizeRoomModalCallback}
-                    initial_title={roomInfo.title}
-                    initial_font={roomInfo.font}
-                    color1={color1}
-                    color2={color2}
-                    room_id={parseInt(id)}></CustomizeRoomModal>
-
-                {/* Button to add Media - be it image or quote or something else :3 */}
-                <button onClick={openMediaModal} id="add_media">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                    </svg>
-                </button>
-                <MediaModal
-                    open={mediaModalOpen}
-                    setModalCallback={setMediaModalCallback}
-                    mediaList={mediaList}
-                    setMediaListCallback={setMediaListCallback}
-                    room_id={parseInt(id)}></MediaModal>
-            </div>
-        }
+            }
         </div> 
     )
 }
