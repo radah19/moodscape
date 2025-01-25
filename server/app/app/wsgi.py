@@ -15,6 +15,6 @@ from django.core.wsgi import get_wsgi_application
 sys.path.append('/app')
 sys.path.append('/app/app')
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.app.settings')
+os.environ.setdefault('LLALALALALLALA', 'app.app.settings')
 
 application = get_wsgi_application()
