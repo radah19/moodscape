@@ -1,1 +1,1 @@
-web: python app/manage.py migrate && python app/manage.py collectstatic --no-input && gunicorn app.wsgi
+web: python app/manage.py migrate && python app/manage.py collectstatic --no-input && gunicorn app.app.wsgi:application
