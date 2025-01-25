@@ -12,9 +12,9 @@ import sys
 
 from django.core.wsgi import get_wsgi_application
 
-sys.path.append('/app')
-sys.path.append('/app/app')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
 
-os.environ.setdefault('LLALALALALLALA', 'app.app.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.app.settings')
 
 application = get_wsgi_application()
