@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-fonts": "node ./src/fonts/fontsWriter.js/"
+    "generate-fonts": "node ./src/fonts/fontsWriter.js/",
+    "serve": "serve -s dist -l 34067"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
