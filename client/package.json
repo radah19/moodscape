@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-fonts": "node ./src/fonts/fontsWriter.js/",
-    "serve": "serve -s dist -l 34067"
+    "serve": "serve -s dist -l import.meta.env.VITE_PORT"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
