@@ -1,1 +1,0 @@
-web: cat "BUILDING APP" && python app/manage.py migrate && python app/manage.py collectstatic --no-input && gunicorn app.wsgi
