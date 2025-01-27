@@ -20,11 +20,11 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': {
           target: env.BACKEND_URL.toString(),
-          rewrite: (path) => path.replace(/^\/api/, ''), //This will just allow it such that the 'api' part will be removed when querying the backend
+          rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/spotify': {
           target: 'https://api.spotify.com',
-          rewrite: (path) => path.replace(/^\/spotify/, ''), //This will just allow it such that the 'api' part will be removed when querying the backend
+          rewrite: (path) => path.replace(/^\/spotify/, ''),
         }
       }
     },
