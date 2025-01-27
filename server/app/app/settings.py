@@ -77,8 +77,8 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # database configs
 DB_USER = str(os.getenv('DB_USER'))
 DB_PWD = str(os.getenv('DB_PWD'))
-HOST = str(os.getenv('HOST'))
-PORT = str(os.getenv('PORT'))
+DB_HOST = str(os.getenv('DB_HOST'))
+DB_PORT = str(os.getenv('DB_PORT'))
 
 # print(DB_USER, DB_PWD, HOST, PORT)
 
@@ -92,8 +92,8 @@ DATABASES = {
         'NAME': 'railway',
         'USER': DB_USER,
         'PASSWORD': DB_PWD,
-        'HOST': HOST,
-        'PORT': PORT,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
