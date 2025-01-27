@@ -69,8 +69,6 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
         }
 
         try {
-            console.log(import.meta.env.VITE_BACKEND_URL);
-            
             const response = await fetch(`/api/auth/`, options);
             const json = await response.json();
             
