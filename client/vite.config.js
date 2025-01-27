@@ -5,7 +5,7 @@ import path from 'path'
 // Modify config to be a function that receives { mode }
 export default defineConfig(({ mode }) => {
   // Load env files from external directory
-  const env = loadEnv(mode, path.resolve('..'), '');
+  const env = loadEnv(mode, path.resolve('.'), '');
 
   return {
     plugins: [react()],
