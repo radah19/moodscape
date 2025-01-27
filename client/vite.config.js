@@ -20,13 +20,11 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': {
           target: env.BACKEND_URL.toString(),
-          changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/spotify': {
           target: 'https://api.spotify.com',
-          changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/spotify/, ''),
         }
