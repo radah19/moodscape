@@ -9,6 +9,7 @@ import selectable_fonts from "../fonts/fonts.js";
 // For font dropdown
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { apiClient } from '../../client.js';
 
 
 export default function CreateCardModal(props) {
@@ -79,7 +80,7 @@ export default function CreateCardModal(props) {
         try {
             event.preventDefault();
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch("/api/vibe_rooms/", {
+            const response = await apiClient.fetch("/vibe_rooms/", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",

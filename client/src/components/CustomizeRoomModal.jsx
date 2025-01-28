@@ -9,6 +9,7 @@ import selectable_fonts from "../fonts/fonts.js";
 // For font dropdown
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { apiClient } from '../../client.js';
 
 const CustomizeRoomModal = (props) => {
     const [color1, setColor1] = useState(props.color1);
@@ -83,7 +84,7 @@ const CustomizeRoomModal = (props) => {
         try {
             event.preventDefault();
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`/api/vibe_room_update_room_id/${props.room_id}/`, {
+            const response = await apiClient.fetch(`/vibe_room_update_room_id/${props.room_id}/`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",

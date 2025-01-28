@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import MediaCard from './MediaCard';
 import EditMediaModal from './EditMediaModal';
 import './MediaCard.css';
+import { apiClient } from '../../client';
 
 
 const MediaModal = (props) => {
@@ -31,7 +32,7 @@ const MediaModal = (props) => {
             event.preventDefault();
             console.log(media_id);
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`/api/media/${media_id}/`, {
+            const response = await apiClient.fetch(`/media/${media_id}/`, {
                 method: "DELETE",
                 headers: {
                     "Content-type": "application/json",
@@ -53,7 +54,7 @@ const MediaModal = (props) => {
             event.preventDefault();
             console.log(props.room_id);
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`/api/media/${id}/`, {
+            const response = await apiClient.fetch(`/media/${id}/`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",

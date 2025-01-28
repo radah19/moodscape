@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie"
 import PuffLoader from "react-spinners/PuffLoader";
+import { apiClient } from "../../client";
 
 const VerifyCachedUserPage = ({setVerifyingCachedUser, setUser}) => {
     const navigate = useNavigate();
@@ -43,7 +44,7 @@ const VerifyCachedUserPage = ({setVerifyingCachedUser, setUser}) => {
 
             try {
 
-                const response = await fetch(`/api/auth/`, options);
+                const response = await apiClient.fetch(`/auth/`, options);
                 const json = await response.json();
 
                 if(json == 'Oopsy!'){

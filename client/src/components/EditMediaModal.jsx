@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Description } from '@headlessui/react';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
+import { apiClient } from '../../client';
 
 const EditMediaModal = (props) => {
     const [text, setText] = useState("");
@@ -21,7 +22,7 @@ const EditMediaModal = (props) => {
             event.preventDefault();
             const csrfToken = Cookies.get('csrftoken');
             console.log(props.initialItem.id);
-            const response = await fetch(`/api/edit_media/${props.initialItem.id}/`, {
+            const response = await apiClient.fetch(`/edit_media/${props.initialItem.id}/`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
