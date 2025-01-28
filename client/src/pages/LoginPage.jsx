@@ -70,7 +70,7 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
         }
 
         try {
-            const response = await apiClient.fetch(`auth/`, options);
+            const response = await apiClient.fetch(`/auth/`, options);
             const json = await response.json();
             
             if(json == 'Oopsy!'){

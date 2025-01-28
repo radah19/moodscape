@@ -27,9 +27,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-37gx2i1@$p)x7mkhh9$+4%gc-3c)j_zw2+q^bxvyz+37j$dn8f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('IN_DEBUG')
+CORS_ALLOW_ALL_ORIGINS = os.getenv('IN_DEBUG')
 
 ALLOWED_HOSTS = [str(os.getenv('BACKEND_URL')).replace("https://", ""), str(os.getenv('FRONTEND_URL')).replace("https://", ""), 'localhost', '127.0.0.1']
+CORS_ALLOWED_ORIGINS = [
+    str(os.getenv('FRONTEND_URL'))
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # Application definition
 
@@ -40,12 +65,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'app'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
