@@ -5,7 +5,7 @@ import path from 'path'
 // Modify config to be a function that receives { mode }
 export default defineConfig(({ mode }) => {
   // Load env files from external directory
-  const env = loadEnv(mode, path.resolve('.'), '');
+  const env = loadEnv(mode, path.resolve('./'), '');
 
   return {
     plugins: [react()],
@@ -19,12 +19,12 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: env.BACKEND_URL.toString(),
-          rewrite: (path) => path.replace(/^\/api/, ''), //This will just allow it such that the 'api' part will be removed when querying the backend
+          target: env.BACKEND_URL,
+          rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/spotify': {
           target: 'https://api.spotify.com',
-          rewrite: (path) => path.replace(/^\/spotify/, ''), //This will just allow it such that the 'api' part will be removed when querying the backend
+          rewrite: (path) => path.replace(/^\/spotify/, ''),
         }
       }
     },

@@ -3,6 +3,7 @@ import HomeCard from '../components/HomeCard';
 import CreateCardModal from '../components/CreateCardModal';
 import './HomePage.css';
 import PropTypes from 'prop-types';
+import { apiClient } from '../../client';
 
 const HomePage = ({user}) => {
 
@@ -16,7 +17,7 @@ const HomePage = ({user}) => {
 
     const fetchVibeRooms = async () => {
         try {
-            const data = await fetch(`/api/vibe_rooms_user_id/${user.username}/`);
+            const data = await apiClient.fetch(`/vibe_rooms_user_id/${user.username}/`);
             const rooms = await data.json();
             setUserVibeRooms(rooms.result);
         }

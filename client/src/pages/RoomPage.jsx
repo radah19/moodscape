@@ -7,6 +7,7 @@ import SpotifyLinkPlayer from "../components/SpotifyLinkPlayer";
 import CustomizeRoomModal from "../components/CustomizeRoomModal";
 import MediaModal from "../components/MediaModal";
 import SlideShow from '../components/SlideShow';
+import { apiClient } from "../../client";
 
 const RoomPage = (props) => {
     const {id} = useParams();
@@ -29,7 +30,7 @@ const RoomPage = (props) => {
         setLoading(true);
 
         const fetchData = async () => {
-            const roomResponse = await fetch(`/api/vibe_rooms_room_id/${id}/`);
+            const roomResponse = await apiClient.fetch(`/vibe_rooms_room_id/${id}/`);
             const roomResponseJSON = await roomResponse.json();
             setRoomInfo(roomResponseJSON.result[0]);
             const temp = roomResponseJSON.result[0].color_gradient.split('#');
@@ -39,12 +40,12 @@ const RoomPage = (props) => {
             setColor1("#" + initialColor1);
             setColor2("#" + initialColor2);
             
-            const mediaResponse = await fetch(`/api/media/${id}/`); 
+            const mediaResponse = await apiClient.fetch(`/media/${id}/`); 
             const mediaResponseJSON = await mediaResponse.json();
             setMediaList(mediaResponseJSON.result);
             setCurMedia(mediaResponseJSON.result[0]);
 
-            const trackListResponse = await fetch(`/api/song_links/${id}/`);
+            const trackListResponse = await apiClient.fetch(`/song_links/${id}/`);
             const trackListResponseJSON = await trackListResponse.json();
             setTrackList(trackListResponseJSON.result);
         }

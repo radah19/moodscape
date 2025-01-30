@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import validator from 'validator';
+import { apiClient } from "../../client";
 
 const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
     const navigate = useNavigate();
@@ -69,10 +70,9 @@ const LoginPage = ({user, setUser, rerouteIfLoggedIn}) => {
         }
 
         try {
-
-            const response = await fetch(`/api/auth/`, options);
+            const response = await apiClient.fetch(`/auth/`, options);
             const json = await response.json();
-
+            
             if(json == 'Oopsy!'){
                 //Login Failed!
                 console.log('Login failed!');

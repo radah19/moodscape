@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import validator from 'validator';
+import { apiClient } from "../../client";
 
 const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
     const navigate = useNavigate();
@@ -104,7 +105,7 @@ const CreateAccountPage = ({user, setUser, rerouteIfLoggedIn}) => {
         }
 
         try {
-            const response = await fetch(`/api/create_account/`, options);
+            const response = await apiClient.fetch(`/create_account/`, options);
             const json = await response.json();
             
             if(response.status == 401){

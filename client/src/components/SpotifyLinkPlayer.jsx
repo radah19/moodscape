@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import validator from 'validator';
 import { Buffer } from 'buffer';
+import { apiClient, spotifyClient } from "../../client";
 
 const SpotifyLinkPlayer = (props) => {
     const [curIndex, setCurIndex] = useState(0);
@@ -72,7 +73,7 @@ const SpotifyLinkPlayer = (props) => {
                 const track_id = temp[temp.length - 1];
 
                 try {
-                    const response = await fetch(`https://api.spotify.com/v1/tracks/${track_id}`, {
+                    const response = await spotifyClient.fetch(`/v1/tracks/${track_id}`, {
                         method: 'GET',
                         headers: { 'Authorization': 'Bearer ' + access_token },
                     });
@@ -196,7 +197,7 @@ const SpotifyLinkPlayer = (props) => {
         const track_id = temp[temp.length - 1];
 
         // Fetch Details about the Link
-        const response = await fetch(`https://api.spotify.com/v1/tracks/${track_id}`, {
+        const response = await spotifyClient.fetch(`/v1/tracks/${track_id}`, {
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + access_token },
         });
@@ -207,7 +208,7 @@ const SpotifyLinkPlayer = (props) => {
             const responseJSON = await response.json();
             // Post Request to add it in DB
             const csrfToken = Cookies.get('csrftoken');
-            const postResponse = await fetch(`/api/song_links/${props.room_id}/`, {
+            const postResponse = await apiClient.fetch(`/song_links/${props.room_id}/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -234,7 +235,7 @@ const SpotifyLinkPlayer = (props) => {
 
     async function deleteTrack(id){
         const csrfToken = Cookies.get('csrftoken');
-        const response = await fetch(`/api/song_links/${id}/`, {
+        const response = await apiClient.fetch(`/song_links/${id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
