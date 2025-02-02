@@ -34,6 +34,7 @@ CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = ["moodscape.up.railway.app", "moodscape-api.up.railway.app", 'localhost', '127.0.0.1']
 CORS_ALLOWED_ORIGINS = ["https://moodscape.up.railway.app", "https://moodscape-api.up.railway.app", 'http://localhost', 'http://127.0.0.1']
 
+CSRF_COOKIE_DOMAIN = '.up.railway.app'
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = ["https://moodscape.up.railway.app", "https://moodscape-api.up.railway.app", 'http://localhost', 'http://127.0.0.1']
