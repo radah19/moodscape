@@ -82,6 +82,7 @@ export default function CreateCardModal(props) {
             const csrfToken = Cookies.get('csrftoken');
             const response = await apiClient.fetch("/vibe_rooms/", {
                 method: "POST",
+                credentials: 'include',
                 headers: {
                     "Content-type": "application/json",
                     'X-CSRFToken': csrfToken},
