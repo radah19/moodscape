@@ -32,7 +32,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 ALLOWED_HOSTS = [str(os.getenv('BACKEND_URL')).replace("https://", ""), str(os.getenv('FRONTEND_URL')).replace("https://", ""), 'localhost', '127.0.0.1']
 CORS_ALLOWED_ORIGINS = [ str(os.getenv('BACKEND_URL')), str(os.getenv('FRONTEND_URL')), str(os.getenv('FRONTEND_URL')).replace("https://", ""), 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = [str(os.getenv('BACKEND_URL')).replace("https://", ""), str(os.getenv('FRONTEND_URL')).replace("https://", ""), 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = [str(os.getenv('BACKEND_URL')), str(os.getenv('FRONTEND_URL')), 'http://localhost', 'http://127.0.0.1']
 
 CORS_ALLOW_METHODS = [
     'DELETE',
