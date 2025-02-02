@@ -30,8 +30,12 @@ SECRET_KEY = 'django-insecure-37gx2i1@$p)x7mkhh9$+4%gc-3c)j_zw2+q^bxvyz+37j$dn8f
 DEBUG = True
 CORS_ALLOW_ALL_ORIGINS = False
 
+CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = [str(os.getenv('BACKEND_URL')).replace("https://", ""), str(os.getenv('FRONTEND_URL')).replace("https://", ""), 'localhost', '127.0.0.1']
 CORS_ALLOWED_ORIGINS = [ str(os.getenv('BACKEND_URL')), str(os.getenv('FRONTEND_URL')), 'http://localhost', 'http://127.0.0.1']
+
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [str(os.getenv('BACKEND_URL')), str(os.getenv('FRONTEND_URL')), 'http://localhost', 'http://127.0.0.1']
 
 CORS_ALLOW_METHODS = [
