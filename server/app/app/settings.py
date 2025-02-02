@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [str(os.getenv('BACKEND_URL')).replace("https://", ""), str(os.g
 CORS_ALLOWED_ORIGINS = [
     str(os.getenv('FRONTEND_URL'))
 ]
+CSRF_TRUSTED_ORIGINS = [str(os.getenv('BACKEND_URL')).replace("https://", ""), str(os.getenv('FRONTEND_URL')).replace("https://", ""), 'localhost', '127.0.0.1']
 
 CORS_ALLOW_METHODS = [
     'DELETE',
