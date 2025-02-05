@@ -17,7 +17,7 @@ def dictfetchall(cursor):
     columns = [col[0] for col in cursor.description]
     return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
-
+@csrf_exempt
 def vibe_rooms(request):
     # print('\nREQUEST: ', request, '\n')
 
@@ -60,6 +60,7 @@ def vibe_rooms(request):
 
         return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+@csrf_exempt
 def vibe_room_user_id(request, username):
     # print('\nREQUEST: ', request, '\n')
     with connection.cursor() as cursor:
@@ -80,6 +81,7 @@ def vibe_room_user_id(request, username):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+@csrf_exempt
 def vibe_room_room_id(request, room_id):
     with connection.cursor() as cursor:
         cursor.execute(
@@ -99,6 +101,7 @@ def vibe_room_room_id(request, room_id):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+@csrf_exempt
 def vibe_room_update_room_id(request, room_id):
     data = json.loads(request.body)
     title = data['title']
@@ -117,6 +120,7 @@ def vibe_room_update_room_id(request, room_id):
     
     return HttpResponse("Room updated", status=201)
 
+@csrf_exempt
 def song(request, room_id):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -159,6 +163,7 @@ def song(request, room_id):
 
         return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+@csrf_exempt
 def media(request, room_id):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -205,7 +210,8 @@ def media(request, room_id):
             response_data['result'] = dictfetchall(cursor)
 
         return HttpResponse(json.dumps(response_data), content_type='application/json')
-    
+
+@csrf_exempt
 def edit_media(request, media_id):
     data = json.loads(request.body)
     img_link = data['img_link']
