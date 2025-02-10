@@ -1,5 +1,6 @@
 # Moodscape
 **Visit the website [here](https://moodscape.up.railway.app)!**
+
 Moodscape is a simple web app built using ReactJS, Django, and PostgresSQL with the purpose of allowing to create individual "rooms," each with their own themes, song playlist, imagery, and colors for the purpose of perhaps getting yourself into a certain mood/headspace, serve as artistic inspiration, etc.
 
 ![image](https://github.com/user-attachments/assets/916a01fe-a057-40c8-8fe9-5c9edacda0f3)
